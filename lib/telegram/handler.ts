@@ -58,7 +58,8 @@ export async function processTelegramUpdate(update: TelegramUpdate) {
       const chatId = cb.message?.chat.id || cb.from.id
       const data = cb.data || ""
 
-      await answerCallbackQuery(cb.id, "Processing request...")
+      // Acknowledge query immediately to stop the button spinning indicator in Telegram client
+      await answerCallbackQuery(cb.id)
 
       if (data === "act:web") {
         const appUrl = getAppUrl()

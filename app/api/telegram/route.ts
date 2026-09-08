@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { processTelegramUpdate, TelegramUpdate } from "@/lib/telegram/handler"
 import { getBotToken } from "@/lib/telegram/client"
-import { telegramPoller } from "@/lib/telegram/poller"
 
 // GET: Check status and webhook health
 export async function GET() {

@@ -1,6 +1,5 @@
 import fs from "node:fs"
 import path from "node:path"
-import https from "node:https"
 import { fileURLToPath } from "node:url"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -44,57 +43,37 @@ console.log(`📡 Bot: @${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "my_m
 console.log(`🌐 Web Terminal: ${appUrl}`)
 console.log("\x1b[32m%s\x1b[0m", `======================================================\n`)
 
-// Outbound HTTPS Agent with persistent keepAlive connection
-const outboundAgent = new https.Agent({
-  keepAlive: true,
-  keepAliveMsecs: 60000,
-  maxSockets: 20,
-  maxFreeSockets: 10,
-  timeout: 3500,
-})
-
-// Outbound Telegram API call
-function callTelegram(method, body) {
-  return new Promise((resolve) => {
-    const postData = JSON.stringify(body)
-    const req = https.request(
-      `https://api.telegram.org/bot${token}/${method}`,
-      {
+// Outbound Telegram API call with auto-retry on transient socket disconnects
+async function callTelegram(method, body = {}) {
+  const url = `https://api.telegram.org/bot${token}/${method}`
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(url, {
         method: "POST",
-        agent: outboundAgent,
-        headers: {
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(postData),
-        },
-        timeout: 3500,
-      },
-      (res) => {
-        let data = ""
-        res.on("data", (chunk) => (data += chunk))
-        res.on("end", () => {
-          try {
-            resolve(JSON.parse(data))
-          } catch {
-            resolve({ ok: false })
-          }
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(12000),
+      })
+      const data = await res.json()
+      if (!data.ok && !data.description?.includes("message is not modified")) {
+        console.warn(`\x1b[33m[Telegram ${method}] ${data.description || "rejected"}\x1b[0m`)
       }
-    )
-
-    req.on("error", (err) => resolve({ ok: false, error: err.message }))
-    req.on("timeout", () => {
-      req.destroy()
-      resolve({ ok: false, error: "timeout" })
-    })
-
-    req.write(postData)
-    req.end()
-  })
+      return data
+    } catch (err) {
+      if (attempt === 0) {
+        // Wait 250ms and retry once if socket disconnected
+        await new Promise((r) => setTimeout(r, 250))
+        continue
+      }
+      console.warn(`[Telegram ${method}] network error:`, err.message)
+      return { ok: false, error: err.message }
+    }
+  }
 }
 
-// Reset webhook on startup
-callTelegram("deleteWebhook", {}).then(() => {
-  console.log("✅ Zero-Lag Poller Active. In-place transitions enabled.")
+// Reset webhook on startup and purge any stuck old pending updates
+callTelegram("deleteWebhook", { drop_pending_updates: true }).then((res) => {
+  console.log("✅ Webhook status:", res.ok ? "Cleared (backlog dropped, ready fresh)" : (res.description || "Active"))
 })
 
 // Send Message
@@ -131,6 +110,23 @@ async function editOrSendMessage(chatId, messageId, text, replyMarkup) {
       reply_markup: replyMarkup,
     })
     if (editRes && editRes.ok) return editRes
+
+    // If edit failed because HTML couldn't be parsed, retry with plain text
+    if (editRes && !editRes.ok && editRes.description?.toLowerCase().includes("can't parse entities")) {
+      const plainText = text.replace(/<[^>]*>/g, "")
+      const retryRes = await callTelegram("editMessageText", {
+        chat_id: chatId,
+        message_id: messageId,
+        text: plainText,
+        reply_markup: replyMarkup,
+      })
+      if (retryRes && retryRes.ok) return retryRes
+    }
+
+    // If content wasn't modified, do not duplicate the message
+    if (editRes && !editRes.ok && editRes.description?.toLowerCase().includes("message is not modified")) {
+      return editRes
+    }
   }
   return sendMessage(chatId, text, replyMarkup)
 }
@@ -217,8 +213,12 @@ async function handleUpdate(update) {
     const messageId = cb.message?.message_id
     const data = cb.data || ""
 
-    if (data === "act:web") {
+    // Immediately acknowledge callback query so Telegram client stops the button spinning animation instantly
+    if (!data.startsWith("act:paper:")) {
       callTelegram("answerCallbackQuery", { callback_query_id: cb.id })
+    }
+
+    if (data === "act:web") {
       const info = `
 🌐 <b>Mekiki Web Dashboard</b>
 
@@ -235,13 +235,11 @@ async function handleUpdate(update) {
     }
 
     if (data === "act:start") {
-      callTelegram("answerCallbackQuery", { callback_query_id: cb.id })
       return sendWelcome(chatId, messageId)
     }
 
     if (data.startsWith("act:verdict:")) {
       const sym = data.replace("act:verdict:", "").trim()
-      callTelegram("answerCallbackQuery", { callback_query_id: cb.id, text: `⚡ ${sym} Verdict Loaded` })
       return sendVerdict(chatId, sym, messageId)
     }
 
@@ -456,6 +454,10 @@ async function sendVerdict(chatId, symbol, messageId) {
     ? (ticker.price * 0.962).toFixed(ticker.price > 100 ? 2 : 4)
     : (ticker.price * 1.038).toFixed(ticker.price > 100 ? 2 : 4)
 
+  const highStr = (ticker.high24h != null ? ticker.high24h : ticker.price * 1.05).toFixed(2)
+  const lowStr = (ticker.low24h != null ? ticker.low24h : ticker.price * 0.95).toFixed(2)
+  const volStr = ((ticker.volume24h != null ? ticker.volume24h : 50000000) / 1e6).toFixed(1)
+
   const card = `
 <b>${stanceEmoji} MEKIKI VERDICT — ${ticker.symbol} / USDT</b>
 
@@ -474,7 +476,7 @@ ${
 🎯 <b>Take Profit:</b> $${takeProfit}
 🛑 <b>Invalidation (SL):</b> $${stopLoss}
 
-📊 <i>High 24h: $${ticker.high24h.toFixed(2)}, Low 24h: $${ticker.low24h.toFixed(2)}. Volume: $${(ticker.volume24h / 1e6).toFixed(1)}M</i>
+📊 <i>High 24h: $${highStr}, Low 24h: $${lowStr}. Volume: $${volStr}M</i>
 `.trim()
 
   return editOrSendMessage(chatId, messageId, card, {
@@ -566,56 +568,58 @@ ${tradeList}
   })
 }
 
-// Immediate Zero-Delay Poll Loop (timeout=0)
+// Persistent Long-Polling Engine (timeout=20s)
+// Telegram holds the connection open; as soon as a user taps a button, Telegram pushes the update immediately (<20ms).
 let offset = 0
 
-function fetchImmediate(currOffset) {
-  return new Promise((resolve) => {
-    const req = https.request(
-      `https://api.telegram.org/bot${token}/getUpdates?offset=${currOffset}&timeout=0&limit=10`,
-      {
-        method: "GET",
-        headers: { "Connection": "close" },
-        timeout: 1500,
-      },
-      (res) => {
-        let data = ""
-        res.on("data", (c) => (data += c))
-        res.on("end", () => {
-          try {
-            resolve(JSON.parse(data))
-          } catch {
-            resolve({ ok: false })
-          }
-        })
-      }
-    )
-    req.on("error", () => resolve({ ok: false }))
-    req.on("timeout", () => {
-      req.destroy()
-      resolve({ ok: false })
+async function fetchUpdates(currOffset) {
+  const url = `https://api.telegram.org/bot${token}/getUpdates?offset=${currOffset}&timeout=20&limit=25`
+  try {
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(30000),
     })
-    req.end()
-  })
+    return await res.json()
+  } catch (err) {
+    return { ok: false, error: err.message }
+  }
 }
 
 async function poll() {
+  console.log("⚡ Long-polling active (timeout=20s). Real-time event push enabled.\n")
   while (true) {
     try {
-      const data = await fetchImmediate(offset)
+      const data = await fetchUpdates(offset)
 
       if (data && data.ok && Array.isArray(data.result)) {
-        for (const update of data.result) {
-          offset = update.update_id + 1
-          const sender = update.message?.from?.username || update.callback_query?.from?.username || "user"
-          const cmd = update.message?.text || update.callback_query?.data || "button"
-          console.log(`\x1b[36m⚡ [${new Date().toLocaleTimeString()}] Processed [${cmd}] for @${sender}\x1b[0m`)
-          handleUpdate(update).catch(() => {})
+        if (data.result.length > 0) {
+          for (const update of data.result) {
+            offset = update.update_id + 1
+            const sender = update.message?.from?.username || update.callback_query?.from?.username || "user"
+            const action = update.message?.text || update.callback_query?.data || "action"
+            console.log(`\x1b[36m⚡ [${new Date().toLocaleTimeString()}] Handled [${action}] from @${sender}\x1b[0m`)
+            // Dispatch asynchronously so next updates are not delayed
+            handleUpdate(update).catch((err) => console.error("Error handling update:", err))
+          }
         }
+        // Immediately loop for next long-poll holding connection
+        continue
+      } else if (data && !data.ok) {
+        if (data.error_code === 429) {
+          const waitSec = data.parameters?.retry_after || 5
+          console.warn(`\x1b[33m⚠️ Telegram 429 Rate Limit. Backing off for ${waitSec}s...\x1b[0m`)
+          await new Promise((r) => setTimeout(r, waitSec * 1000))
+        } else {
+          console.warn(`\x1b[33m⚠️ Telegram getUpdates:\x1b[0m`, data.description || data.error)
+          await new Promise((r) => setTimeout(r, 2000))
+        }
+      } else {
+        // Socket timeout or transient disconnect - retry cleanly in 500ms
+        await new Promise((r) => setTimeout(r, 500))
       }
-    } catch {}
-    // 25ms delay for instant sub-second responsiveness
-    await new Promise((r) => setTimeout(r, 25))
+    } catch (err) {
+      console.warn("Poll loop error:", err)
+      await new Promise((r) => setTimeout(r, 2000))
+    }
   }
 }
 
