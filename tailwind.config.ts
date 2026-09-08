@@ -19,7 +19,10 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["'Google Sans Flex'", "'Host Grotesk'", "system-ui", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
+        heading: ["'Google Sans Flex'", "'Gabarito'", "'Host Grotesk'", "sans-serif"],
+        grotesk: ["'Host Grotesk'", "sans-serif"],
+        gabarito: ["'Gabarito'", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

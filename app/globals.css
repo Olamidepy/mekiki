@@ -43,6 +43,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: 'Google Sans Flex', 'Host Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
@@ -51,11 +52,34 @@
   letter-spacing: -0.025em;
 }
 
-.blob-glow {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(60px);
-  opacity: 0.35;
-  background: radial-gradient(circle at 30% 30%, #6d94ff, #2952ff 70%);
-  pointer-events: none;
+@keyframes waveMotionSlow {
+  0% {
+    transform: translate3d(-3.5%, 0px, 0) scale(1.06);
+  }
+  25% {
+    transform: translate3d(-4.2%, -10px, 0) scale(1.065) rotate(-0.35deg);
+  }
+  50% {
+    transform: translate3d(-4.8%, -18px, 0) scale(1.07) rotate(0.25deg);
+  }
+  75% {
+    transform: translate3d(-4.1%, -8px, 0) scale(1.065) rotate(0.45deg);
+  }
+  100% {
+    transform: translate3d(-3.5%, 0px, 0) scale(1.06);
+  }
 }
+
+.animate-wave-slow {
+  animation: waveMotionSlow 10s ease-in-out infinite;
+  will-change: transform;
+  transform-origin: center bottom;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave-slow {
+    animation: none;
+    transform: translate3d(-3.5%, 0px, 0) scale(1.06);
+  }
+}
+

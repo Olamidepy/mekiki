@@ -9,6 +9,9 @@ import { WatchlistPanel } from "@/components/watchlist-panel"
 import { ReasoningDialog } from "@/components/reasoning-dialog"
 import { PracticeTradeModal } from "@/components/practice-trade-modal"
 import { ScanDialog } from "@/components/scan-dialog"
+import { HowItWorks } from "@/components/how-it-works"
+import { PerformanceMetrics } from "@/components/performance-metrics"
+import { TelegramPreview } from "@/components/telegram-preview"
 import {
   mockMarketStats,
   mockVerdicts,
@@ -75,8 +78,8 @@ export default function Home() {
         onOpenJournal={handleOpenJournal}
       />
 
-      {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full">
+      {/* Main Content Area with generous whitespace dropping verdicts section down */}
+      <main className="max-w-7xl mx-auto px-6 pt-24 sm:pt-36 md:pt-44 pb-20 md:pb-28 flex-1 w-full">
         {/* Verdict Cards Grid */}
         <VerdictGrid
           verdicts={mockVerdicts}
@@ -85,7 +88,7 @@ export default function Home() {
         />
 
         {/* Decision Journal & Watchlist Grid */}
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
             <JournalTable entries={journalEntries} />
           </div>
@@ -97,6 +100,15 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Deep Architecture & Reasoning Engine Section */}
+      <HowItWorks />
+
+      {/* Verifiable Alpha & Exchange Metrics Section */}
+      <PerformanceMetrics />
+
+      {/* Telegram-Native Terminal & Bot Simulator Section */}
+      <TelegramPreview />
 
       {/* Footer */}
       <footer className="border-t border-slate-200 mt-16 bg-white">

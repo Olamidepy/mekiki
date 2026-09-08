@@ -16,16 +16,18 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
   const [connectOpen, setConnectOpen] = React.useState(false)
 
   const navItems = [
-    { id: "overview", label: "Overview", href: "#overview" },
-    { id: "discover", label: "Discover", href: "#verdicts" },
+    { id: "hero", label: "Overview", href: "#hero" },
+    { id: "verdicts", label: "Verdicts", href: "#verdicts" },
+    { id: "how-it-works", label: "Architecture", href: "#how-it-works" },
+    { id: "metrics", label: "Alpha Metrics", href: "#metrics" },
     { id: "journal", label: "Journal", href: "#journal" },
-    { id: "agents", label: "Agents", href: "#watchlist" },
+    { id: "telegram-preview", label: "Telegram Bot", href: "#telegram-preview" },
   ]
 
   const handleNavClick = (id: string, e: React.MouseEvent) => {
     e.preventDefault()
     onTabChange?.(id)
-    const el = document.getElementById(id === "overview" ? "hero" : id === "discover" ? "verdicts" : id)
+    const el = document.getElementById(id)
     if (el) {
       el.scrollIntoView({ behavior: "smooth" })
     }
