@@ -1,11 +1,8 @@
-"use client"
-
 import * as React from "react"
 import { WatchlistItem } from "@/types"
-import { Card } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Eye, Plus } from "lucide-react"
 
 interface WatchlistPanelProps {
   items: WatchlistItem[]
@@ -61,21 +58,17 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
   }
 
   return (
-    <Card id="watchlist" className="rounded-2xl border border-slate-200 p-5 bg-white shadow-none">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Eye className="w-4 h-4 text-slate-500" />
-          <h3 className="font-semibold text-[15px] tracking-tightish text-slate-900">
-            Watchlist
-          </h3>
-        </div>
+    <Card id="watchlist">
+      <CardHeader className="flex flex-row items-center justify-between pb-3">
+        <CardTitle className="text-base font-semibold">
+          Watchlist
+        </CardTitle>
 
         <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger asChild>
-            <button className="text-sm text-[#2952FF] font-medium hover:underline flex items-center gap-0.5">
-              <Plus className="w-3.5 h-3.5" />
-              Add
-            </button>
+            <Button variant="ghost" size="sm" className="h-8 text-xs text-primary font-medium">
+              + Add token
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-sm">
             <DialogHeader>
@@ -131,26 +124,28 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
             </form>
           </DialogContent>
         </Dialog>
-      </div>
+      </CardHeader>
 
-      <div className="space-y-3.5">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center justify-between p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors"
-          >
-            <div>
-              <span className="text-sm font-bold tracking-tight text-slate-900 block">
-                {item.symbol}
-              </span>
-              <span className="text-[11px] text-slate-400 font-normal">
-                {item.name}
-              </span>
+      <CardContent>
+        <div className="space-y-3.5">
+          {items.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between p-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
+            >
+              <div>
+                <span className="text-sm font-semibold tracking-tight text-slate-900 block">
+                  {item.symbol}
+                </span>
+                <span className="text-xs text-muted-foreground font-normal">
+                  {item.name}
+                </span>
+              </div>
+              {getTrendBadge(item)}
             </div>
-            {getTrendBadge(item)}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </CardContent>
     </Card>
   )
 }

@@ -27,11 +27,7 @@ export function VerdictGrid({
       {/* Section Header with generous white space */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 md:mb-12 pb-6 border-b border-slate-100">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold text-[#2952FF] mb-2.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#2952FF]" />
-            <span>Agent Conviction Radar</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Today's verdicts
           </h2>
           <p className="text-sm text-slate-500 mt-1 max-w-xl font-normal">

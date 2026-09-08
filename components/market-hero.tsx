@@ -4,7 +4,6 @@ import * as React from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MarketRegimeStats } from "@/types"
-import { Sparkles, ArrowRight, BookOpen } from "lucide-react"
 
 interface MarketHeroProps {
   stats: MarketRegimeStats
@@ -37,21 +36,20 @@ export function MarketHero({ stats, onRunScan, onOpenJournal }: MarketHeroProps)
             Mekiki scans the market, weighs the evidence, and shows its reasoning before it shows a verdict.
           </p>
 
-          {/* Action buttons */}
+          {/* Action buttons without flashy icons */}
           <div className="mt-12 sm:mt-14 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
             <Button
               size="lg"
               onClick={onRunScan}
-              className="rounded-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white font-medium px-9 py-4 text-base transition-all active:scale-[0.98] shadow-sm h-auto"
+              className="rounded-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white font-medium px-8 py-3.5 text-base transition-all active:scale-[0.98] shadow-sm h-auto"
             >
-              <Sparkles className="w-5 h-5 mr-2.5" />
               Run a scan
             </Button>
             <Button
               variant="outline"
               size="lg"
               onClick={onOpenJournal}
-              className="rounded-full border-slate-300 text-slate-900 hover:bg-slate-50 font-medium px-9 py-4 text-base transition-all h-auto"
+              className="rounded-full border-slate-300 text-slate-900 hover:bg-slate-50 font-medium px-8 py-3.5 text-base transition-all h-auto"
             >
               Open journal
             </Button>
@@ -91,6 +89,9 @@ export function MarketHero({ stats, onRunScan, onOpenJournal }: MarketHeroProps)
           className="w-full h-auto min-w-[1050px] md:min-w-full object-cover object-top block select-none animate-wave-slow"
           draggable={false}
         />
+
+        {/* Soft bottom blur and gradient blend seamlessly into background */}
+        <div className="absolute inset-x-0 bottom-0 h-28 sm:h-40 md:h-52 bg-gradient-to-t from-white via-white/80 to-transparent backdrop-blur-[4px] pointer-events-none" />
       </div>
     </section>
   )

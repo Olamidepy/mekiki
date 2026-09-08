@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Sparkles, Loader2, ArrowRight } from "lucide-react"
+import { Loader2, ArrowRight } from "lucide-react"
 
 interface ScanDialogProps {
   open: boolean
@@ -41,16 +41,11 @@ export function ScanDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl p-6">
         <DialogHeader className="text-left">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-[#eff3ff] flex items-center justify-center text-[#2952FF]">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <DialogTitle className="text-lg font-bold text-slate-900 tracking-tightish">
-              Market discovery scan
-            </DialogTitle>
-          </div>
-          <DialogDescription className="text-xs text-slate-500">
-            Powered by RYO <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-700">scan_market</code> &amp; sentiment divergence detectors.
+          <DialogTitle className="text-lg font-semibold tracking-tight">
+            Market discovery scan
+          </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground">
+            Powered by RYO <code className="bg-muted px-1 py-0.5 rounded font-mono text-xs">scan_market</code> &amp; sentiment divergence detectors.
           </DialogDescription>
         </DialogHeader>
 

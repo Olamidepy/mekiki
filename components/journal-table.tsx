@@ -1,11 +1,8 @@
-"use client"
-
 import * as React from "react"
 import { JournalEntry } from "@/types"
-import { Card } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { BookOpen } from "lucide-react"
 
 interface JournalTableProps {
   entries: JournalEntry[]
@@ -28,18 +25,16 @@ export function JournalTable({ entries }: JournalTableProps) {
   }
 
   return (
-    <Card id="journal" className="rounded-2xl border border-slate-200 p-5 bg-white shadow-none">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <BookOpen className="w-4 h-4 text-slate-500" />
-          <h3 className="font-semibold text-[15px] tracking-tightish text-slate-900">
-            Decision journal
-          </h3>
-        </div>
-        <span className="text-xs text-[#2952FF] font-medium cursor-pointer hover:underline">
+    <Card id="journal">
+      <CardHeader className="flex flex-row items-center justify-between pb-3">
+        <CardTitle className="text-base font-semibold">
+          Decision journal
+        </CardTitle>
+        <span className="text-xs text-primary font-medium">
           {entries.length} tracked calls
         </span>
-      </div>
+      </CardHeader>
+      <CardContent>
 
       <div className="overflow-x-auto">
         <Table className="w-full text-sm">
@@ -78,6 +73,7 @@ export function JournalTable({ entries }: JournalTableProps) {
           </TableBody>
         </Table>
       </div>
+      </CardContent>
 
       {/* Detail Dialog */}
       {selectedEntry && (

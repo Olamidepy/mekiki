@@ -9,9 +9,7 @@ import { WatchlistPanel } from "@/components/watchlist-panel"
 import { ReasoningDialog } from "@/components/reasoning-dialog"
 import { PracticeTradeModal } from "@/components/practice-trade-modal"
 import { ScanDialog } from "@/components/scan-dialog"
-import { HowItWorks } from "@/components/how-it-works"
-import { PerformanceMetrics } from "@/components/performance-metrics"
-import { TelegramPreview } from "@/components/telegram-preview"
+import { IntelDocumentation } from "@/components/intel-documentation"
 import {
   mockMarketStats,
   mockVerdicts,
@@ -88,8 +86,8 @@ export default function Home() {
         />
 
         {/* Decision Journal & Watchlist Grid */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
+        <div className="grid md:grid-cols-3 gap-6" id="watchlist">
+          <div className="md:col-span-2" id="journal">
             <JournalTable entries={journalEntries} />
           </div>
           <div>
@@ -99,16 +97,10 @@ export default function Home() {
             />
           </div>
         </div>
+
+        {/* Deep Long-Read Sections: Methodology, Performance, Protocol, FAQ */}
+        <IntelDocumentation />
       </main>
-
-      {/* Deep Architecture & Reasoning Engine Section */}
-      <HowItWorks />
-
-      {/* Verifiable Alpha & Exchange Metrics Section */}
-      <PerformanceMetrics />
-
-      {/* Telegram-Native Terminal & Bot Simulator Section */}
-      <TelegramPreview />
 
       {/* Footer */}
       <footer className="border-t border-slate-200 mt-16 bg-white">
