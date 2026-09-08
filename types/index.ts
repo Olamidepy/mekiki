@@ -28,10 +28,16 @@ export interface Verdict {
   bearPercent: number
   price: number
   change24h: number
-  volume24h: string
+  volume24h?: string
   evidence: EvidenceChip[]
-  reasoning: ReasoningPass
-  timestamp: string
+  reasoning?: ReasoningPass
+  thesisSummary?: string
+  invalidationPrice?: number
+  targetPrice?: number
+  technicalNotes?: string
+  orderflowNotes?: string
+  sentimentNotes?: string
+  timestamp?: string
 }
 
 export interface JournalEntry {

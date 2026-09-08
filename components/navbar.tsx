@@ -1,7 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 interface NavbarProps {
   activeTab?: string
@@ -9,8 +8,6 @@ interface NavbarProps {
 }
 
 export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
-  const [telegramConnected, setTelegramConnected] = React.useState(false)
-  const [connectOpen, setConnectOpen] = React.useState(false)
 
   const navItems = [
     { id: "hero", label: "Overview", href: "#hero" },
@@ -65,49 +62,17 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
           })}
         </nav>
 
-        {/* Action CTA */}
+        {/* Action CTA: Direct link to Telegram Bot */}
         <div className="flex items-center gap-3">
-          <Dialog open={connectOpen} onOpenChange={setConnectOpen}>
-            <DialogTrigger asChild>
-              <Button
-                variant={telegramConnected ? "outline" : "default"}
-                size="default"
-              >
-                {telegramConnected ? "Connected @mekiki_agent_bot" : "Connect Telegram"}
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Connect Telegram Mini App</DialogTitle>
-                <DialogDescription>
-                  Pair your browser session with the Telegram intelligence bot to receive instant alerts and practice trade notifications.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="p-4 bg-slate-50 rounded-lg border text-sm space-y-2 mt-2">
-                <p className="font-medium text-slate-900">Synchronized reasoning engine</p>
-                <p className="text-xs text-muted-foreground">
-                  Both the Telegram bot and this web dashboard share the exact same RYO market research tool passes and LLM judge verdicts.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2.5 mt-4">
-                <Button
-                  className="w-full"
-                  onClick={() => {
-                    setTelegramConnected(true)
-                    setConnectOpen(false)
-                  }}
-                >
-                  {telegramConnected ? "Re-sync session" : "Authorize session"}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setConnectOpen(false)}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Button asChild variant="default" size="default">
+            <a
+              href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "mekiki_agent_bot"}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Connect Telegram
+            </a>
+          </Button>
         </div>
       </div>
     </header>

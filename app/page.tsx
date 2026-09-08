@@ -32,6 +32,21 @@ export default function Home() {
   const [journalEntries, setJournalEntries] = React.useState<JournalEntry[]>(mockJournalEntries)
   const [watchlistItems, setWatchlistItems] = React.useState<WatchlistItem[]>(mockWatchlist)
 
+  // Fetch synchronized journal entries & ensure Telegram poller is running
+  React.useEffect(() => {
+    // Ping telegram webhook route to initialize bot poller
+    fetch("/api/telegram").catch(() => {})
+
+    fetch("/api/journal")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && Array.isArray(data.entries) && data.entries.length > 0) {
+          setJournalEntries(data.entries)
+        }
+      })
+      .catch((err) => console.log("Using initial journal entries:", err))
+  }, [])
+
   const handleViewReasoning = (verdict: Verdict) => {
     setSelectedVerdict(verdict)
     setReasoningOpen(true)
@@ -44,6 +59,12 @@ export default function Home() {
 
   const handleTradeLogged = (newEntry: JournalEntry) => {
     setJournalEntries((prev) => [newEntry, ...prev])
+    // Synchronize to backend store shared with Telegram bot
+    fetch("/api/journal", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newEntry),
+    }).catch((err) => console.warn("Failed to persist journal entry:", err))
   }
 
   const handleAddWatchlistItem = (newItem: WatchlistItem) => {

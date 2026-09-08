@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Table, TableHeader, TableHead, TableRow, TableCell, TableBody } from "@/components/ui/table"
@@ -56,7 +57,8 @@ export function IntelDocumentation() {
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             How the intelligence engine evaluates market conviction
           </h2>
-          <p className="text-base text-muted-foreground leading-relaxed">
+          <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />
+          <p className="text-base text-muted-foreground leading-relaxed pt-1">
             Conventional crypto bots propagate raw technical indicators with zero context. Mekiki was built as an adversarial reasoning pipeline where potential setups are subjected to exhaustive counter-arguments, orderflow verification, and strict invalidation criteria before a final conviction score is computed.
           </p>
         </div>
@@ -65,7 +67,7 @@ export function IntelDocumentation() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <Badge variant="secondary">Phase 01</Badge>
+                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 01</Badge>
                 <span className="text-xs text-muted-foreground font-mono">Real-time Ingestion</span>
               </div>
               <CardTitle className="text-xl">Multi-Venue Microstructure &amp; CVD</CardTitle>
@@ -86,7 +88,7 @@ export function IntelDocumentation() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <Badge variant="secondary">Phase 02</Badge>
+                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 02</Badge>
                 <span className="text-xs text-muted-foreground font-mono">Structural Mapping</span>
               </div>
               <CardTitle className="text-xl">Multi-Timeframe Structure &amp; FVG</CardTitle>
@@ -107,7 +109,7 @@ export function IntelDocumentation() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <Badge variant="secondary">Phase 03</Badge>
+                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 03</Badge>
                 <span className="text-xs text-muted-foreground font-mono">Consensus Protocol</span>
               </div>
               <CardTitle className="text-xl">Adversarial Dual-Agent Debate</CardTitle>
@@ -128,7 +130,7 @@ export function IntelDocumentation() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <Badge variant="secondary">Phase 04</Badge>
+                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 04</Badge>
                 <span className="text-xs text-muted-foreground font-mono">Deterministic Verdict</span>
               </div>
               <CardTitle className="text-xl">Judge Scoring &amp; Invalidation Gating</CardTitle>
@@ -157,7 +159,8 @@ export function IntelDocumentation() {
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Performance attribution across historical market regimes
           </h2>
-          <p className="text-base text-muted-foreground leading-relaxed">
+          <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />
+          <p className="text-base text-muted-foreground leading-relaxed pt-1">
             Market regimes dictate strategy efficacy. Mekiki adapts its conviction thresholds based on macro regime tracking, ensuring high activity during verified trend expansions and capital preservation during choppy consolidations.
           </p>
         </div>
@@ -230,7 +233,8 @@ export function IntelDocumentation() {
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Command specifications &amp; terminal protocol
           </h2>
-          <p className="text-base text-muted-foreground leading-relaxed">
+          <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />
+          <p className="text-base text-muted-foreground leading-relaxed pt-1">
             The Mekiki web application and Telegram Mini App (@mekiki_agent_bot) operate on a single synchronized state engine. Commands executed in Telegram reflect instantaneously in the web decision journal.
           </p>
         </div>
@@ -343,6 +347,24 @@ export function IntelDocumentation() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-slate-50 border rounded-lg">
+          <div className="space-y-1">
+            <h4 className="font-semibold text-slate-900">Connect directly on Telegram</h4>
+            <p className="text-xs text-muted-foreground">
+              Interrogate tokens, receive conviction alerts, and execute paper trades in Telegram.
+            </p>
+          </div>
+          <Button asChild className="rounded-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white self-start sm:self-auto">
+            <a
+              href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "mekiki_agent_bot"}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Connect Telegram Bot
+            </a>
+          </Button>
+        </div>
       </section>
 
       <Separator />
@@ -354,7 +376,8 @@ export function IntelDocumentation() {
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Frequently asked questions &amp; operational parameters
           </h2>
-          <p className="text-base text-muted-foreground leading-relaxed">
+          <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />
+          <p className="text-base text-muted-foreground leading-relaxed pt-1">
             Technical answers to common operational questions regarding agent autonomy, data source latency, and risk mitigation models.
           </p>
         </div>

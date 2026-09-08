@@ -30,7 +30,8 @@ export function VerdictGrid({
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Today's verdicts
           </h2>
-          <p className="text-sm text-slate-500 mt-1 max-w-xl font-normal">
+          <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-2 mb-2" />
+          <p className="text-sm text-slate-500 max-w-xl font-normal">
             Conviction synthesized from multi-pass bull/bear LLM reasoning and real-time orderflow.
           </p>
         </div>
