@@ -1,5 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
 interface NavbarProps {
@@ -31,13 +32,24 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Brand */}
-        <div className="flex items-center gap-2.5">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#2952FF] flex items-center justify-center text-white shadow-sm font-semibold text-xs">
-              目
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center gap-1">
+            <div className="relative w-10 h-10 flex items-center justify-center shrink-0 -mr-1">
+              <Image
+                src="/images/mekiki-icon.png"
+                alt="Mekiki Logo"
+                width={44}
+                height={44}
+                className="w-10 h-10 object-contain select-none scale-125"
+                priority
+              />
             </div>
-            <span className="font-bold text-[18px] tracking-tightish text-slate-900">Mekiki</span>
-            <span className="text-slate-400 text-sm font-normal ml-0.5 select-none">目利き</span>
+            <span className="font-bold text-[19px] tracking-tight text-slate-900 inline-flex items-center">
+              Mekiki
+            </span>
+            <span className="text-slate-400 text-sm font-normal ml-1 select-none inline-flex items-center">
+              目利き
+            </span>
           </Link>
         </div>
 

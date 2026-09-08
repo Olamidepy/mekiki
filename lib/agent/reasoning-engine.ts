@@ -134,7 +134,7 @@ export async function generateVerdict(symbol: string): Promise<Verdict> {
         tone: change24h > 0 ? "positive" : "warning",
       },
     ],
-    technicalNotes: `High 24h: $${ticker?.high24h ?? (currentPrice * 1.05).toFixed(2)}, Low 24h: $${ticker?.low24h ?? (currentPrice * 0.95).toFixed(2)}. 24h Volume: $${((ticker?.volume24h ?? 10000000) / 1000000).toFixed(1)}M. Structural break marked on 1H candle close.`,
+    technicalNotes: `High 24h: $${Number(ticker?.high24h ?? currentPrice * 1.05).toFixed(2)}, Low 24h: $${Number(ticker?.low24h ?? currentPrice * 0.95).toFixed(2)}. 24h Volume: $${((ticker?.volume24h ?? 10000000) / 1000000).toFixed(1)}M. Structural break marked on 1H candle close.`,
     orderflowNotes: "Bid/Ask delta skewed +18% on perps orderbook. Sub-second liquidations clustered outside current range.",
     sentimentNotes: "Fear & Greed Index remains aligned with selective trend continuation.",
   }

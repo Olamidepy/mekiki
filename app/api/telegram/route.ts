@@ -3,22 +3,17 @@ import { processTelegramUpdate, TelegramUpdate } from "@/lib/telegram/handler"
 import { getBotToken } from "@/lib/telegram/client"
 import { telegramPoller } from "@/lib/telegram/poller"
 
-// GET: Check status, webhook health, and ensure poller is active in dev
+// GET: Check status and webhook health
 export async function GET() {
   const token = getBotToken()
   const configured = Boolean(token && token.length > 5)
-
-  if (configured) {
-    telegramPoller.start()
-  }
 
   return NextResponse.json({
     status: "ok",
     service: "Mekiki Telegram Bot Webhook",
     configured: configured,
-    poller: telegramPoller.getStatus(),
     hint: configured
-      ? "Telegram bot token is loaded and poller is active."
+      ? "Telegram bot token is loaded and ready for production webhooks."
       : "Please set TELEGRAM_BOT_TOKEN in .env.local to enable Telegram bot messaging.",
     timestamp: new Date().toISOString(),
   })

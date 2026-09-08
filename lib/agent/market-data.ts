@@ -36,6 +36,7 @@ export async function fetchLiveTicker(symbol: string): Promise<LiveTicker | null
   try {
     const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${pair}`, {
       next: { revalidate: 15 },
+      signal: AbortSignal.timeout(1500),
     })
 
     if (!res.ok) {
@@ -68,8 +69,8 @@ export async function fetchLiveTicker(symbol: string): Promise<LiveTicker | null
       pair: `${cleanSymbol} / USDT`,
       price: basePrice,
       change24h: 3.4,
-      high24h: basePrice * 1.05,
-      low24h: basePrice * 0.96,
+      high24h: Number((basePrice * 1.05).toFixed(2)),
+      low24h: Number((basePrice * 0.96).toFixed(2)),
       volume24h: 125000000,
     }
   }

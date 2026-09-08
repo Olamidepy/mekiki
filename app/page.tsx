@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { MarketHero } from "@/components/market-hero"
 import { VerdictGrid } from "@/components/verdict-grid"
@@ -32,11 +33,8 @@ export default function Home() {
   const [journalEntries, setJournalEntries] = React.useState<JournalEntry[]>(mockJournalEntries)
   const [watchlistItems, setWatchlistItems] = React.useState<WatchlistItem[]>(mockWatchlist)
 
-  // Fetch synchronized journal entries & ensure Telegram poller is running
+  // Fetch synchronized journal entries from backend API
   React.useEffect(() => {
-    // Ping telegram webhook route to initialize bot poller
-    fetch("/api/telegram").catch(() => {})
-
     fetch("/api/journal")
       .then((res) => res.json())
       .then((data) => {
@@ -126,11 +124,17 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-slate-200 mt-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full bg-[#2952FF] flex items-center justify-center text-white text-[10px]">
-              目
+          <div className="flex items-center gap-1">
+            <div className="relative w-6 h-6 flex items-center justify-center shrink-0 -mr-0.5">
+              <Image
+                src="/images/mekiki-icon.png"
+                alt="Mekiki Logo"
+                width={26}
+                height={26}
+                className="w-6 h-6 object-contain select-none scale-125"
+              />
             </div>
-            <span className="font-semibold text-slate-900">Mekiki</span>
+            <span className="font-semibold text-slate-900 inline-flex items-center">Mekiki</span>
             <span>·</span>
             <span>Telegram-native trading intelligence agent</span>
           </div>

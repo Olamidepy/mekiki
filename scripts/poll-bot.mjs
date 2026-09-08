@@ -39,21 +39,21 @@ if (!token || token.length < 10) {
 }
 
 console.log("\x1b[32m%s\x1b[0m", `\n======================================================`)
-console.log("\x1b[32m%s\x1b[0m", `⚡ MEKIKI HIGH-SPEED TELEGRAM ENGINE (Sub-Second Latency)`)
-console.log(`📡 Connected to Bot: @${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "my_mekiki_trading_bot"}`)
+console.log("\x1b[32m%s\x1b[0m", `⚡ MEKIKI HYPER-SPEED BOT (Real-Time In-Place UI)`)
+console.log(`📡 Bot: @${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "my_mekiki_trading_bot"}`)
 console.log(`🌐 Web Terminal: ${appUrl}`)
 console.log("\x1b[32m%s\x1b[0m", `======================================================\n`)
 
-// High-performance HTTPS Agent with Persistent TLS Tunnels
-const agent = new https.Agent({
+// Outbound HTTPS Agent with persistent keepAlive connection
+const outboundAgent = new https.Agent({
   keepAlive: true,
-  keepAliveMsecs: 15000,
+  keepAliveMsecs: 60000,
   maxSockets: 20,
   maxFreeSockets: 10,
-  timeout: 6000,
+  timeout: 3500,
 })
 
-// Fast Telegram API Call with 5-second connection watchdog
+// Outbound Telegram API call
 function callTelegram(method, body) {
   return new Promise((resolve) => {
     const postData = JSON.stringify(body)
@@ -61,12 +61,12 @@ function callTelegram(method, body) {
       `https://api.telegram.org/bot${token}/${method}`,
       {
         method: "POST",
-        agent,
+        agent: outboundAgent,
         headers: {
           "Content-Type": "application/json",
           "Content-Length": Buffer.byteLength(postData),
         },
-        timeout: 5000,
+        timeout: 3500,
       },
       (res) => {
         let data = ""
@@ -81,13 +81,10 @@ function callTelegram(method, body) {
       }
     )
 
-    req.on("error", (err) => {
-      resolve({ ok: false, error: err.message })
-    })
-
+    req.on("error", (err) => resolve({ ok: false, error: err.message }))
     req.on("timeout", () => {
       req.destroy()
-      resolve({ ok: false, error: "ETIMEDOUT" })
+      resolve({ ok: false, error: "timeout" })
     })
 
     req.write(postData)
@@ -95,14 +92,14 @@ function callTelegram(method, body) {
   })
 }
 
-// Reset webhook on start
+// Reset webhook on startup
 callTelegram("deleteWebhook", {}).then(() => {
-  console.log("✅ Ready & Listening for commands.")
+  console.log("✅ Zero-Lag Poller Active. In-place transitions enabled.")
 })
 
-// Safe Send Message with 1 automatic retry
+// Send Message
 async function sendMessage(chatId, text, replyMarkup) {
-  let res = await callTelegram("sendMessage", {
+  const res = await callTelegram("sendMessage", {
     chat_id: chatId,
     text: text,
     parse_mode: "HTML",
@@ -111,9 +108,8 @@ async function sendMessage(chatId, text, replyMarkup) {
   })
 
   if (!res.ok) {
-    // Retry once with stripped HTML
     const plainText = text.replace(/<[^>]*>/g, "")
-    res = await callTelegram("sendMessage", {
+    return callTelegram("sendMessage", {
       chat_id: chatId,
       text: plainText,
       reply_markup: replyMarkup,
@@ -123,6 +119,22 @@ async function sendMessage(chatId, text, replyMarkup) {
   return res
 }
 
+// In-Place Message Editor (Lightning-fast UI update without chat jumping)
+async function editOrSendMessage(chatId, messageId, text, replyMarkup) {
+  if (messageId) {
+    const editRes = await callTelegram("editMessageText", {
+      chat_id: chatId,
+      message_id: messageId,
+      text: text,
+      parse_mode: "HTML",
+      disable_web_page_preview: false,
+      reply_markup: replyMarkup,
+    })
+    if (editRes && editRes.ok) return editRes
+  }
+  return sendMessage(chatId, text, replyMarkup)
+}
+
 function getWebButton(text = "🌐 Web Terminal") {
   if (appUrl.startsWith("https://")) {
     return { text, url: appUrl }
@@ -130,7 +142,7 @@ function getWebButton(text = "🌐 Web Terminal") {
   return { text, callback_data: "act:web" }
 }
 
-// In-Memory Live Price Cache (Instant responses without waiting on exchange APIs)
+// Pre-cached market data
 const priceCache = new Map([
   ["SOL", { symbol: "SOL", price: 188.45, change24h: 4.8, high24h: 194.2, low24h: 182.1, volume24h: 380000000 }],
   ["BTC", { symbol: "BTC", price: 64520.0, change24h: 2.1, high24h: 65100, low24h: 63800, volume24h: 1850000000 }],
@@ -140,12 +152,26 @@ const priceCache = new Map([
   ["AVAX", { symbol: "AVAX", price: 28.6, change24h: 3.1, high24h: 29.4, low24h: 27.5, volume24h: 165000000 }],
 ])
 
-// Background updater for live prices (runs every 20s without slowing down bot responses)
-async function refreshPricesInBackground() {
+function getPrice(symbol) {
+  const clean = symbol.toUpperCase().replace("/USDT", "").replace("USDT", "").trim()
+  return (
+    priceCache.get(clean) || {
+      symbol: clean,
+      price: 100,
+      change24h: 3.5,
+      high24h: 105,
+      low24h: 96,
+      volume24h: 50000000,
+    }
+  )
+}
+
+// Background Price Refresher
+async function refreshPrices() {
   for (const sym of ["SOL", "BTC", "ETH", "SUI", "INJ", "AVAX"]) {
     try {
       const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${sym}USDT`, {
-        signal: AbortSignal.timeout(2500),
+        signal: AbortSignal.timeout(2000),
       })
       if (res.ok) {
         const d = await res.json()
@@ -161,23 +187,8 @@ async function refreshPricesInBackground() {
     } catch {}
   }
 }
-setInterval(refreshPricesInBackground, 20000)
-refreshPricesInBackground()
-
-function getPrice(symbol) {
-  const clean = symbol.toUpperCase().replace("/USDT", "").replace("USDT", "").trim()
-  if (priceCache.has(clean)) {
-    return priceCache.get(clean)
-  }
-  return {
-    symbol: clean,
-    price: 100,
-    change24h: 3.5,
-    high24h: 105,
-    low24h: 96,
-    volume24h: 50000000,
-  }
-}
+setInterval(refreshPrices, 15000)
+refreshPrices()
 
 // Paper Trade Journal Store
 const paperTrades = [
@@ -187,7 +198,6 @@ const paperTrades = [
 
 function logPaperTrade(entry) {
   paperTrades.unshift(entry)
-  // Sync in background to Next.js API
   try {
     fetch(`${appUrl}/api/journal`, {
       method: "POST",
@@ -198,32 +208,41 @@ function logPaperTrade(entry) {
   } catch {}
 }
 
-// High-Speed Update Handler
+// Immediate Update Dispatcher
 async function handleUpdate(update) {
-  // 1. Inline Button Interactions (Callbacks)
+  // 1. Button Clicks (Callback Queries)
   if (update.callback_query) {
     const cb = update.callback_query
     const chatId = cb.message?.chat.id || cb.from.id
+    const messageId = cb.message?.message_id
     const data = cb.data || ""
 
-    // CRITICAL: Acknowledge callback immediately so Telegram stops loading spinner
-    callTelegram("answerCallbackQuery", { callback_query_id: cb.id })
-
     if (data === "act:web") {
+      callTelegram("answerCallbackQuery", { callback_query_id: cb.id })
       const info = `
 🌐 <b>Mekiki Web Dashboard</b>
 
 • <b>Local Terminal:</b> <code>${appUrl}</code>
 • <b>Status:</b> Live & Synchronized
 
-<i>Open the link in your browser to view 3D conviction cards and live paper journals. When deployed to Vercel with HTTPS, this button opens the Web Mini App directly inside Telegram!</i>
+<i>Open this link in your browser to inspect 3D conviction cards and live practice journals. When deployed with HTTPS, this button opens the Web App directly!</i>
 `.trim()
-      return sendMessage(chatId, info)
+      return editOrSendMessage(chatId, messageId, info, {
+        inline_keyboard: [
+          [{ text: "🔙 Back to Menu", callback_data: "act:start" }],
+        ],
+      })
+    }
+
+    if (data === "act:start") {
+      callTelegram("answerCallbackQuery", { callback_query_id: cb.id })
+      return sendWelcome(chatId, messageId)
     }
 
     if (data.startsWith("act:verdict:")) {
       const sym = data.replace("act:verdict:", "").trim()
-      return sendVerdict(chatId, sym)
+      callTelegram("answerCallbackQuery", { callback_query_id: cb.id, text: `⚡ ${sym} Verdict Loaded` })
+      return sendVerdict(chatId, sym, messageId)
     }
 
     if (data.startsWith("act:paper:")) {
@@ -247,13 +266,19 @@ async function handleUpdate(update) {
 
       logPaperTrade(trade)
 
+      callTelegram("answerCallbackQuery", {
+        callback_query_id: cb.id,
+        text: `✅ ${stance.toUpperCase()} position opened for ${sym} at $${ticker.price}!`,
+        show_alert: true,
+      })
+
       const text = `
-✅ <b>Paper Trade Executed!</b>
+✅ <b>Practice Position Executed!</b>
 
 • <b>Asset:</b> ${sym} / USDT
 • <b>Position:</b> ${stance.toUpperCase()}
-• <b>Entry Price:</b> $${ticker.price.toLocaleString()}
-• <b>Status:</b> Synchronized with Decision Journal
+• <b>Execution Price:</b> $${ticker.price.toLocaleString()}
+• <b>Journal Status:</b> Recorded into Decision Journal
 
 <i>Check your simulated portfolio anytime using /journal</i>
 `.trim()
@@ -269,12 +294,17 @@ async function handleUpdate(update) {
     }
 
     if (data === "act:scan") {
-      return sendScan(chatId)
+      callTelegram("answerCallbackQuery", { callback_query_id: cb.id, text: "🔍 Market Scanned" })
+      return sendScan(chatId, messageId)
     }
 
     if (data === "act:journal") {
-      return sendJournal(chatId)
+      callTelegram("answerCallbackQuery", { callback_query_id: cb.id, text: "📓 Journal Loaded" })
+      return sendJournal(chatId, messageId)
     }
+
+    callTelegram("answerCallbackQuery", { callback_query_id: cb.id })
+    return
   }
 
   // 2. Text Commands
@@ -283,38 +313,7 @@ async function handleUpdate(update) {
     const text = update.message.text.trim()
 
     if (text.startsWith("/start") || text.startsWith("/help")) {
-      const welcome = `
-👋 <b>Welcome to Mekiki (目利き)</b>
-<i>Telegram-Native Trading Intelligence Agent · RYO Hackathon 2026</i>
-
-Mekiki pits opposing agents (Bull vs. Bear) against live market evidence, computes an objective conviction score, and sets strict structural invalidation stops before you risk capital.
-
-<b>Core Commands:</b>
-• <code>/scan</code> — Top liquidity & volume anomalies
-• <code>/verdict SOL</code> — Dual-agent consensus verdict (SOL, BTC, ETH, SUI)
-• <code>/paper long SOL</code> — Open a practice simulated trade
-• <code>/journal</code> — View your live decision journal & win rate
-• <code>/regime</code> — Fear & Greed index and BTC dominance
-
-<i>Tap any action below to begin:</i>
-`.trim()
-
-      return sendMessage(chatId, welcome, {
-        inline_keyboard: [
-          [
-            { text: "🔍 Scan Market", callback_data: "act:scan" },
-            { text: "⚡ Verdict SOL", callback_data: "act:verdict:SOL" },
-          ],
-          [
-            { text: "⚡ Verdict BTC", callback_data: "act:verdict:BTC" },
-            { text: "⚡ Verdict ETH", callback_data: "act:verdict:ETH" },
-          ],
-          [
-            { text: "📓 Decision Journal", callback_data: "act:journal" },
-            getWebButton("🌐 Open Web Terminal"),
-          ],
-        ],
-      })
+      return sendWelcome(chatId)
     }
 
     if (text.startsWith("/scan")) {
@@ -381,7 +380,7 @@ Mekiki pits opposing agents (Bull vs. Bear) against live market evidence, comput
 • <b>Fear & Greed Index:</b> 64/100 (<i>Greed</i>)
 • <b>BTC Dominance:</b> 54.8%
 • <b>Market Breadth:</b> Expanding (Selective altcoin liquidity)
-• <b>Macro Volatility:</b> Normal (Compression before major weekly level)
+• <b>Macro Volatility:</b> Normal (Compression before breakout)
 
 <i>Use <code>/scan</code> to inspect top anomalous assets.</i>
 `.trim()
@@ -393,7 +392,6 @@ Mekiki pits opposing agents (Bull vs. Bear) against live market evidence, comput
       })
     }
 
-    // Default fallback
     return sendMessage(chatId, `Mekiki received: "<i>${text}</i>".\n\nTry sending <code>/verdict SOL</code> or <code>/scan</code>.`, {
       inline_keyboard: [
         [
@@ -405,7 +403,42 @@ Mekiki pits opposing agents (Bull vs. Bear) against live market evidence, comput
   }
 }
 
-async function sendVerdict(chatId, symbol) {
+async function sendWelcome(chatId, messageId) {
+  const welcome = `
+👋 <b>Welcome to Mekiki (目利き)</b>
+<i>Telegram-Native Trading Intelligence Agent · RYO Hackathon 2026</i>
+
+Mekiki pits opposing agents (Bull vs. Bear) against live market evidence, computes an objective conviction score, and sets strict structural invalidation stops before you risk capital.
+
+<b>Core Commands:</b>
+• <code>/scan</code> — Top liquidity & volume anomalies
+• <code>/verdict SOL</code> — Dual-agent consensus verdict (SOL, BTC, ETH, SUI)
+• <code>/paper long SOL</code> — Open a practice simulated trade
+• <code>/journal</code> — View your live decision journal & win rate
+• <code>/regime</code> — Fear & Greed index and BTC dominance
+
+<i>Tap any action below to begin:</i>
+`.trim()
+
+  return editOrSendMessage(chatId, messageId, welcome, {
+    inline_keyboard: [
+      [
+        { text: "🔍 Scan Market", callback_data: "act:scan" },
+        { text: "⚡ Verdict SOL", callback_data: "act:verdict:SOL" },
+      ],
+      [
+        { text: "⚡ Verdict BTC", callback_data: "act:verdict:BTC" },
+        { text: "⚡ Verdict ETH", callback_data: "act:verdict:ETH" },
+      ],
+      [
+        { text: "📓 Decision Journal", callback_data: "act:journal" },
+        getWebButton("🌐 Open Web Terminal"),
+      ],
+    ],
+  })
+}
+
+async function sendVerdict(chatId, symbol, messageId) {
   const ticker = getPrice(symbol)
   const isLong = ticker.change24h >= 0
   const conviction = Math.min(94, Math.floor(70 + Math.abs(ticker.change24h) * 2.5))
@@ -441,10 +474,10 @@ ${
 🎯 <b>Take Profit:</b> $${takeProfit}
 🛑 <b>Invalidation (SL):</b> $${stopLoss}
 
-📊 <i>High 24h: $${ticker.high24h.toFixed(2)}, Low: $${ticker.low24h.toFixed(2)}. Volume: $${(ticker.volume24h / 1e6).toFixed(1)}M</i>
+📊 <i>High 24h: $${ticker.high24h.toFixed(2)}, Low 24h: $${ticker.low24h.toFixed(2)}. Volume: $${(ticker.volume24h / 1e6).toFixed(1)}M</i>
 `.trim()
 
-  return sendMessage(chatId, card, {
+  return editOrSendMessage(chatId, messageId, card, {
     inline_keyboard: [
       [
         { text: `📈 Practice Long`, callback_data: `act:paper:${ticker.symbol}:Long` },
@@ -452,13 +485,13 @@ ${
       ],
       [
         { text: `🔄 Refresh ${ticker.symbol}`, callback_data: `act:verdict:${ticker.symbol}` },
-        getWebButton("🌐 Web Terminal"),
+        { text: `🔍 Back to Scan`, callback_data: `act:scan` },
       ],
     ],
   })
 }
 
-async function sendScan(chatId) {
+async function sendScan(chatId, messageId) {
   const symbols = ["SOL", "ETH", "BTC", "SUI", "INJ", "AVAX"]
   const tickers = symbols.map((s) => getPrice(s))
 
@@ -478,7 +511,7 @@ ${rows}
 <i>Tap any asset below to generate instantaneous dual-agent reasoning:</i>
 `.trim()
 
-  return sendMessage(chatId, text, {
+  return editOrSendMessage(chatId, messageId, text, {
     inline_keyboard: [
       [
         { text: "⚡ SOL", callback_data: "act:verdict:SOL" },
@@ -492,13 +525,13 @@ ${rows}
       ],
       [
         { text: "📓 View Journal", callback_data: "act:journal" },
-        getWebButton("🌐 Open Terminal"),
+        { text: "🏠 Main Menu", callback_data: "act:start" },
       ],
     ],
   })
 }
 
-async function sendJournal(chatId) {
+async function sendJournal(chatId, messageId) {
   const total = paperTrades.length
   const positive = paperTrades.filter((t) => t.outcomePercent >= 0).length
   const winRate = total > 0 ? ((positive / total) * 100).toFixed(1) : "80.0"
@@ -523,27 +556,27 @@ ${tradeList}
 <i>Practice trades allow you to validate the dual-agent conviction without capital risk.</i>
 `.trim()
 
-  return sendMessage(chatId, text, {
+  return editOrSendMessage(chatId, messageId, text, {
     inline_keyboard: [
       [
         { text: "🔍 Run Scan", callback_data: "act:scan" },
-        getWebButton("🌐 Web Dashboard"),
+        { text: "🏠 Main Menu", callback_data: "act:start" },
       ],
     ],
   })
 }
 
-// Ultra-fast Non-Blocking Long Polling Loop
+// Immediate Zero-Delay Poll Loop (timeout=0)
 let offset = 0
 
-function getUpdates(currOffset) {
+function fetchImmediate(currOffset) {
   return new Promise((resolve) => {
     const req = https.request(
-      `https://api.telegram.org/bot${token}/getUpdates?offset=${currOffset}&timeout=3`,
+      `https://api.telegram.org/bot${token}/getUpdates?offset=${currOffset}&timeout=0&limit=10`,
       {
         method: "GET",
-        agent,
-        timeout: 4500,
+        headers: { "Connection": "close" },
+        timeout: 1500,
       },
       (res) => {
         let data = ""
@@ -569,21 +602,20 @@ function getUpdates(currOffset) {
 async function poll() {
   while (true) {
     try {
-      const data = await getUpdates(offset)
+      const data = await fetchImmediate(offset)
 
       if (data && data.ok && Array.isArray(data.result)) {
         for (const update of data.result) {
           offset = update.update_id + 1
           const sender = update.message?.from?.username || update.callback_query?.from?.username || "user"
           const cmd = update.message?.text || update.callback_query?.data || "button"
-          console.log(`\x1b[36m⚡ [${new Date().toLocaleTimeString()}] Dispatched [${cmd}] for @${sender}\x1b[0m`)
-          // CONCURRENT DISPATCH: Don't block the loop, execute immediately!
-          handleUpdate(update).catch((err) => console.error("Error handling update:", err))
+          console.log(`\x1b[36m⚡ [${new Date().toLocaleTimeString()}] Processed [${cmd}] for @${sender}\x1b[0m`)
+          handleUpdate(update).catch(() => {})
         }
       }
     } catch {}
-    // Near-instant interval for high responsiveness
-    await new Promise((r) => setTimeout(r, 200))
+    // 25ms delay for instant sub-second responsiveness
+    await new Promise((r) => setTimeout(r, 25))
   }
 }
 
