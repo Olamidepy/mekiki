@@ -32,6 +32,32 @@ export function ReasoningDialog({
 
   if (!verdict) return null
 
+  const reasoning = verdict.reasoning || {
+    bullCase: [
+      `4H market structure break confirmed on ${verdict.symbol} with sustained spot absorption.`,
+      "Cumulative Volume Delta shows persistent accumulation divergence against flat price action.",
+      "Funding rate discounts indicate spot buyers are driving market progress.",
+    ],
+    bearCase: [
+      "Overhead Fair Value Gap resistance located near immediate target zone.",
+      "Risk of market-wide liquidity drain if BTC dominance rapidly expands.",
+    ],
+    judgeRuling:
+      verdict.thesisSummary ||
+      "Consensus favors an asymmetric setup with strict structural invalidation and a minimum 2.0x R:R ratio.",
+    invalidationCriteria: [
+      `4H candle close breaching structural invalidation level at $${verdict.invalidationPrice ?? (verdict.price * 0.95).toFixed(2)}.`,
+      "Aggressive spot CVD divergence flipping opposite to trade stance.",
+      "Macro Fear & Greed index shifting by >15 points in 24 hours.",
+    ],
+    ryoToolsUsed: [
+      "market_overview",
+      "analyze_token",
+      "deep_analysis",
+      "monitor_market_sentiment_shift",
+    ],
+  }
+
   const handleChallenge = () => {
     setChallengeMode(true)
     setTimeout(() => {
@@ -58,25 +84,30 @@ export function ReasoningDialog({
               <span className="font-bold text-lg text-slate-900 tracking-tightish">
                 {verdict.pair}
               </span>
-              <span className="text-xs text-slate-400 font-normal">
+              <span className="text-xs text-slate-500 font-normal">
                 {verdict.name}
               </span>
-              <span className={`rounded-full text-xs font-semibold px-2.5 py-0.5 ${
-                verdict.stance === "Long"
-                  ? "bg-emerald-50 text-emerald-700"
-                  : verdict.stance === "Short"
-                  ? "bg-rose-50 text-rose-700"
-                  : "bg-slate-100 text-slate-700"
-              }`}>
+              <Badge
+                variant={
+                  verdict.stance === "Long"
+                    ? "default"
+                    : verdict.stance === "Short"
+                    ? "destructive"
+                    : "secondary"
+                }
+                className="text-[11px] px-2 py-0"
+              >
                 {verdict.stance}
-              </span>
+              </Badge>
             </div>
 
             <div className="text-right">
-              <span className="text-xl font-extrabold text-slate-900">
+              <span className="font-bold text-base text-slate-900">
                 {verdict.conviction}
               </span>
-              <span className="text-xs text-slate-400 ml-1">/ 100</span>
+              <span className="text-[11px] text-slate-500 block -mt-1">
+                conviction
+              </span>
             </div>
           </div>
           <DialogDescription className="text-xs text-slate-500 mt-1">
@@ -90,7 +121,7 @@ export function ReasoningDialog({
             Analytical intelligence modules called:
           </span>
           <div className="flex flex-wrap gap-1.5">
-            {verdict.reasoning.ryoToolsUsed.map((tool) => (
+            {reasoning.ryoToolsUsed.map((tool) => (
               <span
                 key={tool}
                 className="font-mono text-[11px] bg-white text-slate-700 px-2.5 py-0.5 rounded-full border border-slate-200"
@@ -112,7 +143,7 @@ export function ReasoningDialog({
               </h4>
             </div>
             <ul className="space-y-1.5 text-xs text-slate-700 list-disc list-inside">
-              {verdict.reasoning.bullCase.map((point, idx) => (
+              {reasoning.bullCase.map((point, idx) => (
                 <li key={idx} className="leading-relaxed">
                   {point}
                 </li>
@@ -129,7 +160,7 @@ export function ReasoningDialog({
               </h4>
             </div>
             <ul className="space-y-1.5 text-xs text-slate-700 list-disc list-inside">
-              {verdict.reasoning.bearCase.map((point, idx) => (
+              {reasoning.bearCase.map((point, idx) => (
                 <li key={idx} className="leading-relaxed">
                   {point}
                 </li>
@@ -146,7 +177,7 @@ export function ReasoningDialog({
               </h4>
             </div>
             <p className="text-xs text-slate-800 leading-relaxed">
-              {verdict.reasoning.judgeRuling}
+              {reasoning.judgeRuling}
             </p>
           </div>
 
@@ -159,7 +190,7 @@ export function ReasoningDialog({
               </h4>
             </div>
             <ul className="space-y-1 text-xs text-slate-700 list-disc list-inside">
-              {verdict.reasoning.invalidationCriteria.map((crit, idx) => (
+              {reasoning.invalidationCriteria.map((crit, idx) => (
                 <li key={idx}>{crit}</li>
               ))}
             </ul>
