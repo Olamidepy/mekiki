@@ -25,25 +25,25 @@ export function VerdictGrid({
   return (
     <div id="verdicts" className="mb-24 md:mb-36">
       {/* Section Header with generous white space */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 md:mb-12 pb-6 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-8 md:mb-12 pb-6 border-b border-slate-100">
         <div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Today's verdicts
           </h2>
-          <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-2 mb-2" />
-          <p className="text-sm text-slate-500 max-w-xl font-normal">
+          <div className="w-12 sm:w-14 h-1 bg-[#2952FF] rounded-full mt-2 mb-2" />
+          <p className="text-xs sm:text-sm text-slate-500 max-w-xl font-normal">
             Conviction synthesized from multi-pass bull/bear LLM reasoning and real-time orderflow.
           </p>
         </div>
 
         {/* Filter pills */}
-        <div className="flex items-center gap-3 self-start sm:self-auto">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 self-start sm:self-auto">
           <div className="inline-flex rounded-full bg-slate-100 p-1 border border-slate-200/80 text-xs">
             {(["all", "Long", "Neutral"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`rounded-full px-4 py-1.5 font-medium transition-all capitalize ${
+                className={`rounded-full px-3 sm:px-4 py-1 sm:py-1.5 font-medium transition-all capitalize text-xs ${
                   filter === f
                     ? "bg-white text-slate-900 shadow-sm font-semibold"
                     : "text-slate-500 hover:text-slate-900"
@@ -56,7 +56,7 @@ export function VerdictGrid({
 
           <button
             onClick={() => setFilter("all")}
-            className="text-xs text-[#2952FF] font-semibold hover:underline px-2"
+            className="text-xs text-[#2952FF] font-semibold hover:underline px-1 sm:px-2"
           >
             See all ({verdicts.length})
           </button>

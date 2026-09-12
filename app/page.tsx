@@ -96,7 +96,7 @@ export default function Home() {
       />
 
       {/* Main Content Area with generous whitespace dropping verdicts section down */}
-      <main className="max-w-7xl mx-auto px-6 pt-24 sm:pt-36 md:pt-44 pb-20 md:pb-28 flex-1 w-full">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-32 md:pt-44 pb-16 md:pb-28 flex-1 w-full">
         {/* Verdict Cards Grid */}
         <VerdictGrid
           verdicts={mockVerdicts}
@@ -123,8 +123,8 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-slate-200 mt-16 bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-1">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1">
             <div className="relative w-6 h-6 flex items-center justify-center shrink-0 -mr-0.5">
               <Image
                 src="/images/mekiki-icon.png"
@@ -138,7 +138,7 @@ export default function Home() {
             <span>·</span>
             <span>Telegram-native trading intelligence agent</span>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             <span>Powered by Mekiki Market Intelligence Engine</span>
             <a
               href="#hero"

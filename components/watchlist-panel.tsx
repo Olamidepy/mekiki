@@ -70,7 +70,7 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
               + Add token
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-sm">
+          <DialogContent className="w-[92vw] sm:max-w-sm p-4 sm:p-6 rounded-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-base font-bold text-slate-900">
                 Add token to watchlist

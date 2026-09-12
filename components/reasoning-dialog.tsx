@@ -77,11 +77,11 @@ export function ReasoningDialog({
         setChallengeResult(null)
       }
     }}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto p-6">
+      <DialogContent className="w-[94vw] sm:max-w-2xl max-h-[88vh] overflow-y-auto p-4 sm:p-6 rounded-2xl">
         <DialogHeader className="text-left">
-          <div className="flex items-center justify-between pr-6">
-            <div className="flex items-center gap-2.5">
-              <span className="font-bold text-lg text-slate-900 tracking-tightish">
+          <div className="flex flex-wrap items-center justify-between gap-2 pr-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-bold text-base sm:text-lg text-slate-900 tracking-tightish">
                 {verdict.pair}
               </span>
               <span className="text-xs text-slate-500 font-normal">
@@ -102,10 +102,10 @@ export function ReasoningDialog({
             </div>
 
             <div className="text-right">
-              <span className="font-bold text-base text-slate-900">
+              <span className="font-bold text-sm sm:text-base text-slate-900">
                 {verdict.conviction}
               </span>
-              <span className="text-[11px] text-slate-500 block -mt-1">
+              <span className="text-[10px] sm:text-[11px] text-slate-500 block -mt-1">
                 conviction
               </span>
             </div>
@@ -211,13 +211,13 @@ export function ReasoningDialog({
         </div>
 
         {/* Footer actions */}
-        <div className="flex items-center justify-between gap-3 pt-3 border-t border-slate-200 mt-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 pt-3 border-t border-slate-200 mt-3">
           <Button
             variant="outline"
             size="sm"
             onClick={handleChallenge}
             disabled={challengeMode}
-            className="rounded-full text-xs border-slate-300"
+            className="w-full sm:w-auto rounded-full text-xs border-slate-300"
           >
             <HelpCircle className="w-3.5 h-3.5 mr-1.5" />
             {challengeMode ? "Evaluating challenge..." : "Challenge this thesis"}
@@ -229,7 +229,7 @@ export function ReasoningDialog({
               onOpenChange(false)
               onPracticeTrade(verdict)
             }}
-            className="rounded-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white text-xs px-5 shadow-none"
+            className="w-full sm:w-auto rounded-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white text-xs px-5 shadow-none"
           >
             Practice trade
           </Button>

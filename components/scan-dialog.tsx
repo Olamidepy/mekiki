@@ -39,13 +39,13 @@ export function ScanDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl p-6">
+      <DialogContent className="w-[92vw] max-w-xl p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-2xl">
         <DialogHeader className="text-left">
-          <DialogTitle className="text-lg font-semibold tracking-tight">
+          <DialogTitle className="text-base sm:text-lg font-semibold tracking-tight">
             Market discovery scan
           </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground">
-            Powered by Mekiki <code className="bg-muted px-1 py-0.5 rounded font-mono text-xs">scan_market</code> &amp; sentiment divergence detectors.
+          <DialogDescription className="text-xs sm:text-sm text-muted-foreground">
+            Powered by Mekiki <code className="bg-muted px-1 py-0.5 rounded font-mono text-[11px] sm:text-xs">scan_market</code> &amp; sentiment divergence detectors.
           </DialogDescription>
         </DialogHeader>
 

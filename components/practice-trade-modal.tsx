@@ -61,13 +61,13 @@ export function PracticeTradeModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-6">
+      <DialogContent className="w-[92vw] max-w-md p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-2xl">
         <DialogHeader className="text-left">
-          <div className="flex items-center justify-between pr-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 pr-4">
             <DialogTitle className="text-base font-bold text-slate-900">
               Practice trade simulation
             </DialogTitle>
-            <span className="text-xs bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full font-medium">
+            <span className="text-[11px] sm:text-xs bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full font-medium">
               Simulated paper trade
             </span>
           </div>

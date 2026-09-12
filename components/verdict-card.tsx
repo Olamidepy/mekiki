@@ -50,8 +50,8 @@ export function VerdictCard({
       <div className="pointer-events-none absolute -bottom-10 -right-10 w-36 h-36 rounded-full border border-slate-100 transform-gpu group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 opacity-60 z-0" />
 
       {/* Card Content with Bento GPU translation */}
-      <div className="p-6 flex-1 flex flex-col justify-between relative z-10">
-        <div className="space-y-4 transform-gpu transition-all duration-300 lg:group-hover:-translate-y-1.5">
+      <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between relative z-10">
+        <div className="space-y-3.5 sm:space-y-4 transform-gpu transition-all duration-300 lg:group-hover:-translate-y-1.5">
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
@@ -75,7 +75,7 @@ export function VerdictCard({
           {/* Conviction Metric */}
           <div className="flex items-baseline justify-between pt-1">
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold tracking-tight text-slate-900 group-hover:text-[#2952FF] transition-colors duration-300">
+              <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 group-hover:text-[#2952FF] transition-colors duration-300">
                 {verdict.conviction}
               </span>
               <span className="text-xs text-muted-foreground font-medium">
@@ -83,7 +83,7 @@ export function VerdictCard({
               </span>
             </div>
             {verdict.volume24h && (
-              <span className="text-[11px] font-mono text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/60">
+              <span className="text-[10px] sm:text-[11px] font-mono text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/60">
                 Vol: {verdict.volume24h}
               </span>
             )}
@@ -113,7 +113,7 @@ export function VerdictCard({
               <span
                 key={chip.id}
                 className={cn(
-                  "inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-full border transition-all duration-200",
+                  "inline-flex items-center text-[10px] sm:text-[11px] font-medium px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border transition-all duration-200",
                   chip.tone === "positive"
                     ? "bg-emerald-50/70 border-emerald-200 text-emerald-700 group-hover:border-emerald-300"
                     : chip.tone === "negative"
@@ -128,22 +128,22 @@ export function VerdictCard({
         </div>
 
         {/* Footer Actions with Bento smooth lift */}
-        <div className="flex gap-2 pt-5 mt-4 border-t border-slate-100 transform-gpu transition-all duration-300 lg:group-hover:translate-y-0">
+        <div className="flex gap-2 pt-4 sm:pt-5 mt-4 border-t border-slate-100 transform-gpu transition-all duration-300 lg:group-hover:translate-y-0">
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 text-xs font-medium rounded-xl hover:border-slate-300 hover:bg-slate-50 transition-all"
+            className="flex-1 text-xs font-medium rounded-xl hover:border-slate-300 hover:bg-slate-50 transition-all px-2 sm:px-3"
             onClick={() => onViewReasoning(verdict)}
           >
             View reasoning
           </Button>
           <Button
             size="sm"
-            className="flex-1 text-xs font-semibold rounded-xl bg-[#2952FF] hover:bg-[#1f3fd6] text-white shadow-sm hover:shadow transition-all inline-flex items-center justify-center gap-1.5 group/btn"
+            className="flex-1 text-xs font-semibold rounded-xl bg-[#2952FF] hover:bg-[#1f3fd6] text-white shadow-sm hover:shadow transition-all inline-flex items-center justify-center gap-1 sm:gap-1.5 group/btn px-2 sm:px-3"
             onClick={() => onPracticeTrade(verdict)}
           >
             <span>Practice trade</span>
-            <ArrowRight className="w-3.5 h-3.5 transform-gpu group-hover/btn:translate-x-1 transition-transform duration-200" />
+            <ArrowRight className="w-3.5 h-3.5 transform-gpu group-hover/btn:translate-x-1 transition-transform duration-200 shrink-0" />
           </Button>
         </div>
       </div>

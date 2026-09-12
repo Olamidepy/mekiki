@@ -65,7 +65,7 @@ export function IntelDocumentation() {
           </p>
         </div>
 
-        <BentoGrid className="grid-cols-1 md:grid-cols-2 auto-rows-[19rem] gap-6">
+        <BentoGrid className="grid-cols-1 md:grid-cols-2 auto-rows-auto md:auto-rows-[19rem] gap-4 sm:gap-6">
           <BentoCard
             name="Phase 01: Multi-Venue Microstructure & CVD"
             className="col-span-1"
@@ -314,14 +314,14 @@ export function IntelDocumentation() {
           </TabsContent>
         </Tabs>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-slate-50 border rounded-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 bg-slate-50 border rounded-xl">
           <div className="space-y-1">
-            <h4 className="font-semibold text-slate-900">Connect directly on Telegram</h4>
+            <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Connect directly on Telegram</h4>
             <p className="text-xs text-muted-foreground">
               Interrogate tokens, receive conviction alerts, and execute paper trades in Telegram.
             </p>
           </div>
-          <Button asChild className="rounded-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white self-start sm:self-auto">
+          <Button asChild className="rounded-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white w-full sm:w-auto text-xs sm:text-sm">
             <a
               href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "mekiki_agent_bot"}`}
               target="_blank"

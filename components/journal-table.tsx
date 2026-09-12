@@ -78,7 +78,7 @@ export function JournalTable({ entries }: JournalTableProps) {
       {/* Detail Dialog */}
       {selectedEntry && (
         <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="w-[92vw] sm:max-w-md p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-2xl">
             <DialogHeader>
               <DialogTitle className="text-base font-bold text-slate-900">
                 Journal entry · {selectedEntry.symbol}
