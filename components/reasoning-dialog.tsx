@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Verdict } from "@/types"
+import { Verdict, ReasoningPass } from "@/types"
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ export function ReasoningDialog({
 
   if (!verdict) return null
 
-  const reasoning = verdict.reasoning || {
+  const reasoning: ReasoningPass = verdict.reasoning ?? {
     bullCase: [
       `4H market structure break confirmed on ${verdict.symbol} with sustained spot absorption.`,
       "Cumulative Volume Delta shows persistent accumulation divergence against flat price action.",
