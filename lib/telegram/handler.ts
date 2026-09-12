@@ -139,7 +139,7 @@ export async function processTelegramUpdate(update: TelegramUpdate) {
     if (update.message && update.message.text) {
       const msg = update.message
       const chatId = msg.chat.id
-      const text = msg.text.trim()
+      const text = (msg.text ?? "").trim()
       const appUrl = getAppUrl()
 
       // Command: /start or /help
