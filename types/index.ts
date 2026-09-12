@@ -30,7 +30,7 @@ export interface Verdict {
   change24h: number
   volume24h?: string
   evidence: EvidenceChip[]
-  reasoning?: ReasoningPass
+  reasoning: ReasoningPass
   thesisSummary?: string
   invalidationPrice?: number
   targetPrice?: number
