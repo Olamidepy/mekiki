@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Table, TableHeader, TableHead, TableRow, TableCell, TableBody } from "@/components/ui/table"
+import { BentoGrid, BentoCard } from "@/components/ui/bento-grid"
+import { Activity, Layers, Scale, ShieldCheck } from "lucide-react"
 
 export function IntelDocumentation() {
   const performanceData = [
@@ -63,91 +65,55 @@ export function IntelDocumentation() {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 01</Badge>
-                <span className="text-xs text-muted-foreground font-mono">Real-time Ingestion</span>
-              </div>
-              <CardTitle className="text-xl">Multi-Venue Microstructure &amp; CVD</CardTitle>
-              <CardDescription>
-                High-frequency orderbook and liquidity cluster scanning
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-              <p>
-                The RYO data pipeline aggregates spot and perpetual futures orderbooks across major venues including Hyperliquid, Binance, and Bybit. Rather than relying on simple price moving averages, the engine tracks Cumulative Volume Delta (CVD) to identify aggressive market participants versus passive absorption.
-              </p>
-              <p>
-                When aggressive market buying fails to push price higher, the pipeline flags potential absorption and liquidity distribution. Setups that exhibit significant divergence between open interest expansion and price progress are isolated for deep contextual evaluation.
-              </p>
-            </CardContent>
-          </Card>
+        <BentoGrid className="grid-cols-1 md:grid-cols-2 auto-rows-[19rem] gap-6">
+          <BentoCard
+            name="Phase 01: Multi-Venue Microstructure & CVD"
+            className="col-span-1"
+            Icon={Activity}
+            description="Aggregates spot and perpetual orderbooks across liquid venues. Evaluates Cumulative Volume Delta (CVD) to identify aggressive market participants versus passive limit absorption."
+            href="#methodology"
+            cta="Ingestion Pipeline"
+            background={
+              <div className="pointer-events-none absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-[#2952FF]/15 via-transparent to-transparent blur-2xl transform-gpu group-hover:scale-150 transition-all duration-500" />
+            }
+          />
 
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 02</Badge>
-                <span className="text-xs text-muted-foreground font-mono">Structural Mapping</span>
-              </div>
-              <CardTitle className="text-xl">Multi-Timeframe Structure &amp; FVG</CardTitle>
-              <CardDescription>
-                Algorithmic detection of Fair Value Gaps and Point of Control
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-              <p>
-                Once abnormal delta or volume anomalies are registered, the engine aligns 15-minute, 1-hour, and 4-hour market structure. It identifies undiscounted Fair Value Gaps (FVG), volume profile points of control (PoC), and liquidity sweeps above prior session highs or lows.
-              </p>
-              <p>
-                A trade hypothesis is only formed if the setup occurs at a mathematically favorable retest zone where clear structural invalidation can be defined with tight, non-arbitrary risk bounds.
-              </p>
-            </CardContent>
-          </Card>
+          <BentoCard
+            name="Phase 02: Multi-Timeframe Structure & FVG"
+            className="col-span-1"
+            Icon={Layers}
+            description="Aligns 15m, 1h, and 4h price action to algorithmically detect Fair Value Gaps, Point of Control (PoC), and liquidity sweeps above prior session highs and lows."
+            href="#methodology"
+            cta="Structural Mapping"
+            background={
+              <div className="pointer-events-none absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-indigo-500/15 via-transparent to-transparent blur-2xl transform-gpu group-hover:scale-150 transition-all duration-500" />
+            }
+          />
 
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 03</Badge>
-                <span className="text-xs text-muted-foreground font-mono">Consensus Protocol</span>
-              </div>
-              <CardTitle className="text-xl">Adversarial Dual-Agent Debate</CardTitle>
-              <CardDescription>
-                Autonomous Bull and Bear passes stress-testing trade hypotheses
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-              <p>
-                Mekiki instantiates two competing LLM agent processes. The Bull agent constructs the strongest thesis for price expansion, evaluating trend continuation, positive funding skew, and orderbook support shelves.
-              </p>
-              <p>
-                Concurrently, the Bear agent aggressively attempts to falsify the setup, highlighting macro headwinds, upcoming token unlocks, exchange liquidation clusters, and historical failure rates of similar structures.
-              </p>
-            </CardContent>
-          </Card>
+          <BentoCard
+            name="Phase 03: Adversarial Dual-Agent Debate"
+            className="col-span-1"
+            Icon={Scale}
+            description="Autonomous Bull and Bear agents stress-test hypotheses simultaneously. The Bull builds continuation arguments while the Bear hunts for falsification traps and liquidity overhangs."
+            href="#methodology"
+            cta="Debate Protocol"
+            background={
+              <div className="pointer-events-none absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-purple-500/15 via-transparent to-transparent blur-2xl transform-gpu group-hover:scale-150 transition-all duration-500" />
+            }
+          />
 
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge className="bg-[#2952FF] text-white hover:bg-[#1f3fd6] border-0 font-medium px-2.5 py-0.5">Phase 04</Badge>
-                <span className="text-xs text-muted-foreground font-mono">Deterministic Verdict</span>
-              </div>
-              <CardTitle className="text-xl">Judge Scoring &amp; Invalidation Gating</CardTitle>
-              <CardDescription>
-                Numeric conviction calibration with mandatory risk-to-reward rules
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-              <p>
-                An independent LLM Judge reconciles both arguments. Conviction is calibrated on a 0–100 integer scale. Setups scoring above 75 are designated as active trades only if they maintain a verified Risk-to-Reward ratio of at least 2.0x.
-              </p>
-              <p>
-                Every published verdict includes an immutable invalidation level. If the market violates this threshold, the trade is automatically abandoned, preventing the emotional bag-holding that degrades retail performance.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+          <BentoCard
+            name="Phase 04: Judge Scoring & Invalidation Gating"
+            className="col-span-1"
+            Icon={ShieldCheck}
+            description="Arbitrates opposing arguments to compute a 0–100 integer conviction score. Enforces a non-negotiable structural invalidation stop and a mandatory minimum 2.0x Risk-to-Reward ratio."
+            href="#methodology"
+            cta="Risk Invalidation"
+            background={
+              <div className="pointer-events-none absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-emerald-500/15 via-transparent to-transparent blur-2xl transform-gpu group-hover:scale-150 transition-all duration-500" />
+            }
+          />
+        </BentoGrid>
       </section>
 
       <Separator />
@@ -406,7 +372,7 @@ export function IntelDocumentation() {
               <CardTitle className="text-base">Can Mekiki connect directly to my live exchange account?</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground leading-relaxed">
-              During the hackathon release, Mekiki operates exclusively in advisory and practice paper-trading mode. This ensures complete user security with zero private key custody or withdrawal permissions. Real exchange execution will be introduced via non-custodial smart contract vaults in v2.
+              Mekiki operates in safe-by-design advisory and simulated paper-trading mode. This ensures complete capital security with zero private key custody, API secret hazards, or unauthorized asset movements. Live non-custodial execution modules can be plugged in optionally via dedicated smart account vaults.
             </CardContent>
           </Card>
 

@@ -78,7 +78,7 @@ export async function generateVerdict(symbol: string): Promise<Verdict> {
     invalidationPrice: stopLoss,
     targetPrice: takeProfit,
     volume24h: `$${((ticker?.volume24h ?? 15000000) / 1000000).toFixed(1)}M`,
-    timestamp: "Live · RYO Research Stream",
+    timestamp: "Live · Mekiki Intelligence Stream",
     reasoning: {
       bullCase: isLong
         ? [

@@ -170,7 +170,7 @@ export const mockJournalEntries: JournalEntry[] = [
     currentPrice: 154.20,
     outcomePercent: 4.8,
     outcomeStatus: "positive",
-    notes: "Entered after RYO bull-case conviction pass crossed 75."
+    notes: "Entered after Mekiki bull-case conviction pass crossed 75."
   },
   {
     id: "j2",
@@ -212,7 +212,7 @@ export const mockJournalEntries: JournalEntry[] = [
     currentPrice: 31.10,
     outcomePercent: 9.5,
     outcomeStatus: "positive",
-    notes: "Catalyst confirmation through RYO token scan."
+    notes: "Catalyst confirmation through Mekiki token scan."
   },
   {
     id: "j5",

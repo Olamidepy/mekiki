@@ -404,7 +404,7 @@ async function handleUpdate(update) {
 async function sendWelcome(chatId, messageId) {
   const welcome = `
 👋 <b>Welcome to Mekiki (目利き)</b>
-<i>Telegram-Native Trading Intelligence Agent · RYO Hackathon 2026</i>
+<i>Telegram-Native Multi-Agent Trading Intelligence Terminal</i>
 
 Mekiki pits opposing agents (Bull vs. Bear) against live market evidence, computes an objective conviction score, and sets strict structural invalidation stops before you risk capital.
 
@@ -465,7 +465,7 @@ async function sendVerdict(chatId, symbol, messageId) {
 • <b>Consensus Split:</b> 🟩 Bull ${bullPercent}% | Bear ${bearPercent}% 🟥
 • <b>Live Price:</b> $${ticker.price.toLocaleString()} (${changeEmoji}${ticker.change24h}%)
 
-<b>Thesis (RYO Research Synthesis):</b>
+<b>Thesis (Mekiki Intelligence Synthesis):</b>
 ${
   isLong
     ? `4H market structure break confirmed on ${ticker.symbol}. Cumulative Volume Delta (CVD) shows persistent spot absorption with negative funding rates, indicating shorts are paying longs.`
@@ -506,7 +506,7 @@ async function sendScan(chatId, messageId) {
 
   const text = `
 🔍 <b>MEKIKI REAL-TIME MARKET SCAN</b>
-<i>Live Anomalies from RYO Research Layer:</i>
+<i>Live Anomalies from Mekiki Market Radar:</i>
 
 ${rows}
 

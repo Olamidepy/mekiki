@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Mekiki (目利き) — Trading Intelligence Agent",
-  description: "Telegram-native trading intelligence agent built on RYO market research tools with transparent bull/bear/judge reasoning passes.",
+  title: "Mekiki (目利き) — Multi-Agent Trading Intelligence Terminal",
+  description: "Telegram-native trading intelligence terminal powered by adversarial multi-agent reasoning, real-time market microstructure, and transparent bull/bear/judge consensus.",
 }
 
 export default function RootLayout({

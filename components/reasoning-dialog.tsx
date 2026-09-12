@@ -80,14 +80,14 @@ export function ReasoningDialog({
             </div>
           </div>
           <DialogDescription className="text-xs text-slate-500 mt-1">
-            Synthesized via RYO market intelligence tools · {verdict.timestamp}
+            Synthesized via Mekiki Market Intelligence Engine · {verdict.timestamp}
           </DialogDescription>
         </DialogHeader>
 
         {/* Tools used pill row */}
         <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 text-xs">
           <span className="font-medium text-slate-500 block mb-1.5">
-            RYO research tools called:
+            Analytical intelligence modules called:
           </span>
           <div className="flex flex-wrap gap-1.5">
             {verdict.reasoning.ryoToolsUsed.map((tool) => (

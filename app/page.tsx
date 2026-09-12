@@ -139,7 +139,7 @@ export default function Home() {
             <span>Telegram-native trading intelligence agent</span>
           </div>
           <div className="flex items-center gap-6">
-            <span>Powered by RYO market research tools</span>
+            <span>Powered by Mekiki Market Intelligence Engine</span>
             <a
               href="#hero"
               className="text-slate-600 hover:text-slate-900 transition-colors"

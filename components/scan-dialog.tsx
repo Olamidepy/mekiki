@@ -45,7 +45,7 @@ export function ScanDialog({
             Market discovery scan
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground">
-            Powered by RYO <code className="bg-muted px-1 py-0.5 rounded font-mono text-xs">scan_market</code> &amp; sentiment divergence detectors.
+            Powered by Mekiki <code className="bg-muted px-1 py-0.5 rounded font-mono text-xs">scan_market</code> &amp; sentiment divergence detectors.
           </DialogDescription>
         </DialogHeader>
 
@@ -56,7 +56,7 @@ export function ScanDialog({
               Evaluating 148 pairs across volume, sentiment &amp; breadth...
             </p>
             <p className="text-xs text-slate-400">
-              Running bull/bear filter passes via RYO MCP tools
+              Running bull/bear filter passes via Mekiki Agent Engine
             </p>
           </div>
         ) : (
