@@ -31,15 +31,14 @@ export function ThemeProvider({
   React.useEffect(() => {
     try {
       const savedTheme = localStorage.getItem(storageKey) as Theme | null
-      if (savedTheme) {
+      if (savedTheme === "dark" || savedTheme === "light") {
         setThemeState(savedTheme)
       } else {
-        // Check system preference
-        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-        setThemeState(systemPrefersDark ? "dark" : "light")
+        // Explicitly default to light mode
+        setThemeState("light")
       }
     } catch {
-      // Fallback if localStorage unavailable
+      setThemeState("light")
     }
     setMounted(true)
   }, [storageKey])

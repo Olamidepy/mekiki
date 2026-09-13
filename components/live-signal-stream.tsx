@@ -180,14 +180,65 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
   const [signals, setSignals] = React.useState<LiveSimulationSignal[]>(INITIAL_SIGNALS)
   const [isLive, setIsLive] = React.useState(true)
   const [activeNetwork, setActiveNetwork] = React.useState<string>("all")
-  const [sparklines, setSparklines] = React.useState<Record<string, number[]>>({
-    HYPE: [22.4, 22.8, 23.1, 23.9, 24.2, 24.62],
-    AERO: [1.11, 1.13, 1.15, 1.14, 1.17, 1.19],
-    TON: [5.21, 5.25, 5.30, 5.28, 5.34, 5.38],
-    SUI: [1.71, 1.74, 1.78, 1.81, 1.83, 1.86],
-    ARB: [0.63, 0.638, 0.642, 0.639, 0.644, 0.645],
-    SOL: [147.2, 149.0, 151.2, 150.8, 153.4, 154.8],
+
+  const [tokenPrices, setTokenPrices] = React.useState<Record<string, { price: number; change24h: number }>>({
+    HYPE: { price: 77.92, change24h: -1.85 },
+    AERO: { price: 0.56, change24h: -2.95 },
+    TON: { price: 1.35, change24h: -1.74 },
+    SUI: { price: 0.71, change24h: -2.31 },
+    ARB: { price: 0.1365, change24h: -4.91 },
+    SOL: { price: 100.15, change24h: -1.68 },
   })
+
+  const [sparklines, setSparklines] = React.useState<Record<string, number[]>>({
+    HYPE: [76.5, 77.1, 76.8, 77.4, 77.92],
+    AERO: [0.58, 0.57, 0.565, 0.56, 0.56],
+    TON: [1.38, 1.37, 1.36, 1.355, 1.35],
+    SUI: [0.73, 0.725, 0.72, 0.715, 0.71],
+    ARB: [0.144, 0.141, 0.139, 0.137, 0.1365],
+    SOL: [102.4, 101.8, 100.9, 100.5, 100.15],
+  })
+
+  // Fetch live CoinGecko prices
+  React.useEffect(() => {
+    const loadPrices = async () => {
+      try {
+        const res = await fetch("/api/prices", { cache: "no-store" })
+        if (!res.ok) return
+        const data = await res.json()
+        if (data.ok && data.prices) {
+          const updated: Record<string, { price: number; change24h: number }> = {}
+          const newSpark: Record<string, number[]> = {}
+
+          for (const sym of ["HYPE", "AERO", "TON", "SUI", "ARB", "SOL"]) {
+            const pData = data.prices[sym]
+            if (pData && typeof pData.price === "number") {
+              updated[sym] = { price: pData.price, change24h: pData.change24h }
+              const p = pData.price
+              newSpark[sym] = [
+                Number((p * 0.988).toFixed(p < 1 ? 4 : 2)),
+                Number((p * 0.992).toFixed(p < 1 ? 4 : 2)),
+                Number((p * 0.989).toFixed(p < 1 ? 4 : 2)),
+                Number((p * 0.996).toFixed(p < 1 ? 4 : 2)),
+                p,
+              ]
+            }
+          }
+
+          if (Object.keys(updated).length > 0) {
+            setTokenPrices((prev) => ({ ...prev, ...updated }))
+            setSparklines((prev) => ({ ...prev, ...newSpark }))
+          }
+        }
+      } catch (err) {
+        console.warn("Live signal stream prices warning:", err)
+      }
+    }
+
+    loadPrices()
+    const pInterval = setInterval(loadPrices, 15000)
+    return () => clearInterval(pInterval)
+  }, [])
 
   // Simulated live event generation
   React.useEffect(() => {
@@ -292,6 +343,11 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
         return { ...prev, [selected.symbol!]: newArr }
       })
 
+      const currentPrice =
+        tokenPrices[selected.symbol!]?.price ??
+        (selected.symbol === "ARB" ? 0.1365 : selected.symbol === "AERO" ? 0.56 : selected.symbol === "TON" ? 1.35 : selected.symbol === "SUI" ? 0.71 : selected.symbol === "HYPE" ? 77.92 : 100.15)
+      const currentChange = tokenPrices[selected.symbol!]?.change24h ?? Number(((Math.random() * 4) - 2).toFixed(1))
+
       const newSig: LiveSimulationSignal = {
         id: `sig-${Date.now()}`,
         timestamp: new Date().toLocaleTimeString(),
@@ -300,8 +356,8 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
         network: selected.network as any,
         stance: selected.stance as any,
         conviction: selected.conviction!,
-        price: selected.symbol === "ARB" ? 0.648 : selected.symbol === "AERO" ? 1.19 : selected.symbol === "TON" ? 5.39 : selected.symbol === "SUI" ? 1.86 : selected.symbol === "HYPE" ? 24.68 : 154.9,
-        priceChange: Number(((Math.random() * 6) + 2).toFixed(1)),
+        price: currentPrice,
+        priceChange: currentChange,
         signalType: selected.signalType!,
         catalyst: selected.catalyst!,
         bullEvidence: selected.bullEvidence!,
@@ -314,7 +370,7 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
     }, 3800)
 
     return () => clearInterval(interval)
-  }, [isLive])
+  }, [isLive, tokenPrices])
 
   const filteredSignals = React.useMemo(() => {
     if (activeNetwork === "all") return signals
@@ -362,9 +418,15 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
       {/* Section Header matching standard verdict-grid styling */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-6 md:mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            Real-time simulation stream
-          </h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Real-time simulation stream
+            </h2>
+            <Badge variant="outline" className="hidden sm:inline-flex text-[11px] font-semibold border-emerald-500/40 text-emerald-700 dark:text-emerald-400 bg-emerald-50/70 dark:bg-emerald-950/40 items-center gap-1.5 py-0.5 px-2.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              CoinGecko Live
+            </Badge>
+          </div>
           <div className="w-12 sm:w-14 h-1 bg-[#2952FF] rounded-full mt-2 mb-2" />
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-xl font-normal">
             Adversarial multi-agent telemetry streaming in motion. Live micro-orderflow, CVD absorption, and structural catalysts across ecosystems.
@@ -412,17 +474,21 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
         </div>
       </div>
 
-      {/* Live Token Sparkline Grid (In Motion) */}
+      {/* Live Token Sparkline Grid (In Motion with Real CoinGecko Prices) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8">
         {[
-          { symbol: "HYPE", name: "Hyperliquid", net: "Hyperliquid", price: 24.62, change: "+11.4%", isUp: true },
-          { symbol: "AERO", name: "Aerodrome", net: "Base", price: 1.19, change: "+6.8%", isUp: true },
-          { symbol: "TON", name: "Toncoin", net: "TON", price: 5.38, change: "+4.1%", isUp: true },
-          { symbol: "SUI", name: "Sui Network", net: "Sui", price: 1.86, change: "+8.9%", isUp: true },
-          { symbol: "ARB", name: "Arbitrum", net: "Arbitrum", price: 0.645, change: "+1.4%", isUp: true },
-          { symbol: "SOL", name: "Solana", net: "Solana", price: 154.8, change: "+5.6%", isUp: true },
+          { symbol: "HYPE", name: "Hyperliquid", net: "Hyperliquid" },
+          { symbol: "AERO", name: "Aerodrome", net: "Base" },
+          { symbol: "TON", name: "Toncoin", net: "TON" },
+          { symbol: "SUI", name: "Sui Network", net: "Sui" },
+          { symbol: "ARB", name: "Arbitrum", net: "Arbitrum" },
+          { symbol: "SOL", name: "Solana", net: "Solana" },
         ].map((tk) => {
-          const points = sparklines[tk.symbol] || [10, 11, 10.5, 11.2, 11.8]
+          const priceObj = tokenPrices[tk.symbol]
+          const price = priceObj?.price ?? (tk.symbol === "HYPE" ? 77.92 : tk.symbol === "SOL" ? 100.15 : 1.0)
+          const change = priceObj?.change24h ?? 0
+          const isUp = change >= 0
+          const points = sparklines[tk.symbol] || [price * 0.985, price * 0.99, price * 0.995, price]
           const isLatestLong = (points[points.length - 1] ?? 0) >= (points[points.length - 2] ?? 0)
 
           return (
@@ -442,10 +508,15 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
 
                 <div className="flex items-baseline justify-between mb-2">
                   <span className="text-base font-bold text-slate-900 dark:text-white font-mono">
-                    ${tk.price < 1 ? tk.price.toFixed(3) : tk.price.toFixed(2)}
+                    ${price < 1 ? price.toFixed(4) : price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
-                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 font-mono">
-                    {tk.change}
+                  <span
+                    className={cn(
+                      "text-[11px] font-semibold font-mono",
+                      isUp ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+                    )}
+                  >
+                    {isUp ? `+${change}%` : `${change}%`}
                   </span>
                 </div>
               </div>

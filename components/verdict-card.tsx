@@ -65,7 +65,25 @@ export function VerdictCard({
                   </span>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground font-medium">{verdict.name}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-xs text-muted-foreground font-medium">{verdict.name}</p>
+                <span className="text-slate-300 dark:text-slate-700">·</span>
+                <span className="text-xs font-mono font-bold text-slate-900 dark:text-white">
+                  ${verdict.price < 1 ? verdict.price.toFixed(4) : verdict.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+                {verdict.change24h !== undefined && (
+                  <span
+                    className={cn(
+                      "text-[10px] sm:text-[11px] font-mono font-semibold px-1 rounded",
+                      verdict.change24h >= 0
+                        ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40"
+                        : "text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40"
+                    )}
+                  >
+                    {verdict.change24h >= 0 ? `+${verdict.change24h}%` : `${verdict.change24h}%`}
+                  </span>
+                )}
+              </div>
             </div>
             <Badge
               variant={getBadgeVariant()}

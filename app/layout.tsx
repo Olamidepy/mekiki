@@ -21,6 +21,24 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap"
           rel="stylesheet"
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('mekiki-theme');
+                  if (saved === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {
+                  document.documentElement.classList.remove('dark');
+                }
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="bg-background text-foreground antialiased font-sans selection:bg-[#2952FF] selection:text-white transition-colors duration-200">
         <ThemeProvider defaultTheme="light" storageKey="mekiki-theme">

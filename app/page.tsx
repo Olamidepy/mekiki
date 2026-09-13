@@ -3,6 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
+import { RealtimeTickerBar } from "@/components/realtime-ticker-bar"
 import { MarketHero } from "@/components/market-hero"
 import { VerdictGrid } from "@/components/verdict-grid"
 import { JournalTable } from "@/components/journal-table"
@@ -31,8 +32,58 @@ export default function Home() {
 
   const [scanModalOpen, setScanModalOpen] = React.useState(false)
 
+  const [verdicts, setVerdicts] = React.useState<Verdict[]>(mockVerdicts)
   const [journalEntries, setJournalEntries] = React.useState<JournalEntry[]>(mockJournalEntries)
   const [watchlistItems, setWatchlistItems] = React.useState<WatchlistItem[]>(mockWatchlist)
+
+  // Fetch real-time token prices from CoinGecko API
+  React.useEffect(() => {
+    const fetchLivePrices = async () => {
+      try {
+        const res = await fetch("/api/prices", { cache: "no-store" })
+        if (!res.ok) return
+        const data = await res.json()
+        if (data.ok && data.prices) {
+          // Update verdicts with real-time CoinGecko prices
+          setVerdicts((prev) =>
+            prev.map((v) => {
+              const live = data.prices[v.symbol]
+              if (live && typeof live.price === "number") {
+                return {
+                  ...v,
+                  price: live.price,
+                  change24h: live.change24h,
+                }
+              }
+              return v
+            })
+          )
+
+          // Update watchlist items with real-time CoinGecko prices
+          setWatchlistItems((prev) =>
+            prev.map((item) => {
+              const live = data.prices[item.symbol]
+              if (live && typeof live.price === "number") {
+                return {
+                  ...item,
+                  price: live.price,
+                  change24h: live.change24h,
+                  trend: live.change24h >= 0 ? "up" : "down",
+                }
+              }
+              return item
+            })
+          )
+        }
+      } catch (err) {
+        console.warn("Could not sync live token prices:", err)
+      }
+    }
+
+    fetchLivePrices()
+    const interval = setInterval(fetchLivePrices, 15000)
+    return () => clearInterval(interval)
+  }, [])
 
   // Fetch synchronized journal entries from backend API
   React.useEffect(() => {
@@ -78,7 +129,7 @@ export default function Home() {
   }
 
   const handleSelectCandidate = (symbol: string) => {
-    const match = mockVerdicts.find((v) => v.symbol === symbol)
+    const match = verdicts.find((v) => v.symbol === symbol)
     if (match) {
       handleViewReasoning(match)
     }
@@ -88,6 +139,9 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground dark:bg-[#07080c] flex flex-col selection:bg-[#2952FF] selection:text-white transition-colors duration-200">
       {/* Navigation */}
       <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {/* Real-time CoinGecko token ticker ribbon */}
+      <RealtimeTickerBar />
 
       {/* Hero section with market regime and 3D coil flourish */}
       <MarketHero
@@ -100,7 +154,7 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-32 md:pt-44 pb-16 md:pb-28 flex-1 w-full">
         {/* Verdict Cards Grid */}
         <VerdictGrid
-          verdicts={mockVerdicts}
+          verdicts={verdicts}
           onViewReasoning={handleViewReasoning}
           onPracticeTrade={handlePracticeTrade}
         />

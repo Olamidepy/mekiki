@@ -3,6 +3,7 @@ import { WatchlistItem } from "@/types"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 
 interface WatchlistPanelProps {
   items: WatchlistItem[]
@@ -15,24 +16,36 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
   const [newName, setNewName] = React.useState("")
 
   const getTrendBadge = (item: WatchlistItem) => {
-    if (item.trend === "up") {
-      return (
-        <span className="text-xs rounded-full bg-emerald-50 text-emerald-700 px-2.5 py-1 font-semibold">
-          {item.conviction} ↑
-        </span>
-      )
-    }
-    if (item.trend === "down") {
-      return (
-        <span className="text-xs rounded-full bg-rose-50 text-rose-700 px-2.5 py-1 font-semibold">
-          {item.conviction} ↓
-        </span>
-      )
-    }
     return (
-      <span className="text-xs rounded-full bg-slate-100 text-slate-600 px-2.5 py-1 font-medium">
-        {item.conviction} →
-      </span>
+      <div className="flex flex-col items-end gap-0.5">
+        {typeof item.price === "number" && (
+          <span className="text-xs font-mono font-bold text-slate-900 dark:text-white">
+            ${item.price < 1 ? item.price.toFixed(4) : item.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </span>
+        )}
+        <div className="flex items-center gap-1.5">
+          {item.change24h !== undefined && (
+            <span
+              className={cn(
+                "text-[10px] font-mono font-semibold",
+                item.change24h >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+              )}
+            >
+              {item.change24h >= 0 ? `+${item.change24h}%` : `${item.change24h}%`}
+            </span>
+          )}
+          <span
+            className={cn(
+              "text-[10px] rounded-full px-1.5 py-0.5 font-semibold leading-none",
+              item.trend === "up" && "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300",
+              item.trend === "down" && "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300",
+              item.trend !== "up" && item.trend !== "down" && "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+            )}
+          >
+            {item.conviction} {item.trend === "up" ? "↑" : item.trend === "down" ? "↓" : "→"}
+          </span>
+        </div>
+      </div>
     )
   }
 
