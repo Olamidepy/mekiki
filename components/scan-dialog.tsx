@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Loader2, ArrowRight } from "lucide-react"
+import { Loader2, ArrowRight, RefreshCw } from "lucide-react"
 
 interface ScanDialogProps {
   open: boolean
@@ -25,27 +25,50 @@ export function ScanDialog({
   candidates,
   onSelectCandidate,
 }: ScanDialogProps) {
+  const [liveCandidates, setLiveCandidates] = React.useState<ScanCandidate[]>(candidates)
   const [scanning, setScanning] = React.useState(false)
+  const [scanTimestamp, setScanTimestamp] = React.useState<string>("Just now")
+
+  const executeLiveScan = React.useCallback(async () => {
+    setScanning(true)
+    try {
+      const res = await fetch("/api/scan", { cache: "no-store" })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.ok && Array.isArray(data.data?.candidates) && data.data.candidates.length > 0) {
+          setLiveCandidates(data.data.candidates)
+          setScanTimestamp(new Date().toLocaleTimeString())
+        }
+      }
+    } catch (err) {
+      console.warn("Live scan API error:", err)
+    } finally {
+      setTimeout(() => {
+        setScanning(false)
+      }, 550)
+    }
+  }, [])
 
   React.useEffect(() => {
     if (open) {
-      setScanning(true)
-      const timer = setTimeout(() => {
-        setScanning(false)
-      }, 700)
-      return () => clearTimeout(timer)
+      executeLiveScan()
     }
-  }, [open])
+  }, [open, executeLiveScan])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[92vw] max-w-xl p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-2xl bg-background dark:bg-slate-950 border-slate-200 dark:border-slate-800">
         <DialogHeader className="text-left">
-          <DialogTitle className="text-base sm:text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
-            Market discovery scan
-          </DialogTitle>
+          <div className="flex items-center justify-between pr-6">
+            <DialogTitle className="text-base sm:text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
+              Live market discovery scan
+            </DialogTitle>
+            <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-200/60 dark:border-emerald-800">
+              Live Engine
+            </span>
+          </div>
           <DialogDescription className="text-xs sm:text-sm text-muted-foreground">
-            Powered by Mekiki <code className="bg-muted px-1 py-0.5 rounded font-mono text-[11px] sm:text-xs">scan_market</code> &amp; sentiment divergence detectors.
+            Scanned in real-time across volume, Relative Strength Index, and CVD absorption.
           </DialogDescription>
         </DialogHeader>
 
@@ -53,18 +76,24 @@ export function ScanDialog({
           <div className="py-12 flex flex-col items-center justify-center text-center space-y-3">
             <Loader2 className="w-8 h-8 text-[#2952FF] animate-spin" />
             <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-              Evaluating 148 pairs across volume, sentiment &amp; breadth...
+              Scanning live pairs across volume, sentiment &amp; breadth...
             </p>
             <p className="text-xs text-slate-400 dark:text-slate-500">
-              Running bull/bear filter passes via Mekiki Agent Engine
+              Computing bull/bear dialectic passes via Mekiki Agent Engine
             </p>
           </div>
         ) : (
           <div className="space-y-3 my-2">
-            <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-              Top 3 candidate setups
-            </p>
-            {candidates.map((cand) => (
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                Top ranked live setups
+              </p>
+              <span className="text-[10px] text-muted-foreground font-mono">
+                Evaluated: {scanTimestamp}
+              </span>
+            </div>
+
+            {liveCandidates.map((cand) => (
               <div
                 key={cand.symbol}
                 className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-[#2952FF]/50 transition-all flex flex-col gap-2"
@@ -85,7 +114,7 @@ export function ScanDialog({
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs font-medium text-slate-400 dark:text-slate-500">Score</span>{" "}
+                    <span className="text-xs font-medium text-slate-400 dark:text-slate-500">Conviction</span>{" "}
                     <span className="text-base font-extrabold text-[#2952FF] dark:text-[#5c80ff]">
                       {cand.score}
                     </span>
@@ -114,7 +143,17 @@ export function ScanDialog({
           </div>
         )}
 
-        <div className="flex justify-end pt-2">
+        <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={executeLiveScan}
+            disabled={scanning}
+            className="text-xs text-muted-foreground hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${scanning ? "animate-spin" : ""}`} />
+            <span>Re-scan now</span>
+          </Button>
           <Button
             variant="outline"
             size="sm"

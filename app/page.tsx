@@ -31,9 +31,22 @@ export default function Home() {
 
   const [scanModalOpen, setScanModalOpen] = React.useState(false)
 
+  const [marketStats, setMarketStats] = React.useState<MarketRegimeStats>(mockMarketStats)
   const [verdicts, setVerdicts] = React.useState<Verdict[]>(mockVerdicts)
   const [journalEntries, setJournalEntries] = React.useState<JournalEntry[]>(mockJournalEntries)
   const [watchlistItems, setWatchlistItems] = React.useState<WatchlistItem[]>(mockWatchlist)
+
+  // Fetch live market macro regime stats (Fear & Greed, BTC Dominance, Breadth)
+  React.useEffect(() => {
+    fetch("/api/scan")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.data?.stats) {
+          setMarketStats(data.data.stats)
+        }
+      })
+      .catch((err) => console.warn("Live market stats fetch error:", err))
+  }, [])
 
   // Fetch real-time token prices from CoinGecko API
   React.useEffect(() => {
@@ -127,10 +140,24 @@ export default function Home() {
     }
   }
 
-  const handleSelectCandidate = (symbol: string) => {
+  const handleSelectCandidate = async (symbol: string) => {
     const match = verdicts.find((v) => v.symbol === symbol)
     if (match) {
       handleViewReasoning(match)
+      return
+    }
+    // Dynamically fetch live agent verdict from backend API
+    try {
+      const res = await fetch(`/api/verdict?symbol=${encodeURIComponent(symbol)}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.ok && data.verdict) {
+          setVerdicts((prev) => [data.verdict, ...prev])
+          handleViewReasoning(data.verdict)
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to generate live verdict for candidate:", err)
     }
   }
 
@@ -141,7 +168,7 @@ export default function Home() {
 
       {/* Hero section with market regime and 3D coil flourish */}
       <MarketHero
-        stats={mockMarketStats}
+        stats={marketStats}
         onRunScan={() => setScanModalOpen(true)}
         onOpenJournal={handleOpenJournal}
       />
