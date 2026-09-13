@@ -405,7 +405,7 @@ async function handleUpdate(update) {
 
 async function sendWelcome(chatId, messageId) {
   const welcome = `
-👋 <b>Welcome to Mekiki (目利き)</b>
+👋 <b>Welcome to Mekiki</b>
 <i>Telegram-Native Multi-Agent Trading Intelligence Terminal</i>
 
 Mekiki pits opposing agents (Bull vs. Bear) against live market evidence across multiple ecosystems, computes an objective conviction score, and sets strict structural invalidation stops before you risk capital.

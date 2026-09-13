@@ -145,7 +145,7 @@ export async function processTelegramUpdate(update: TelegramUpdate) {
       // Command: /start or /help
       if (text.startsWith("/start") || text.startsWith("/help")) {
         const welcomeText = `
-👋 <b>Welcome to Mekiki (目利き)</b>
+👋 <b>Welcome to Mekiki</b>
 <i>Telegram-Native Trading Intelligence Agent</i>
 
 Mekiki scans cross-chain orderflow, weighs onchain & microstructure evidence across opposing agents (Bull vs. Bear), and presents calibrated conviction before you risk capital.

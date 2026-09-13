@@ -59,9 +59,6 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
             <span className="font-bold text-lg sm:text-[19px] tracking-tight text-slate-900 inline-flex items-center">
               Mekiki
             </span>
-            <span className="text-slate-400 text-xs sm:text-sm font-normal ml-1 select-none inline-flex items-center">
-              目利き
-            </span>
           </Link>
         </div>
 
@@ -123,7 +120,7 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
                       className="w-8 h-8 object-contain"
                     />
                     <SheetTitle className="font-bold text-lg text-slate-900">
-                      Mekiki <span className="text-slate-400 font-normal text-sm">目利き</span>
+                      Mekiki
                     </SheetTitle>
                   </div>
                 </SheetHeader>

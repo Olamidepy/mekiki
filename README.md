@@ -1,4 +1,4 @@
-# 👁️ Mekiki (目利き) — Agentic SocialFi Trading Intelligence Terminal
+# Mekiki — Agentic SocialFi Trading Intelligence Terminal
 
 <div align="center">
 
@@ -12,15 +12,15 @@
 **The dialectic multi-agent trading consensus terminal for crypto markets.**  
 *Pitting opposing autonomous agents (Bull vs. Bear) against live orderflow microstructure, calculating mathematical conviction, and enforcing structural invalidation before you risk capital.*
 
-[Explore Features](#-core-platform-features) • [System Architecture](#-system-architecture) • [Methodology](#-analytical-methodology--conviction-calibration) • [Telegram Protocol](#-telegram-bot--mini-app-protocol) • [Quickstart](#-quickstart-guide) • [API Reference](#-api-specification)
+[Explore Features](#core-platform-features) • [System Architecture](#system-architecture) • [Methodology](#analytical-methodology--conviction-calibration) • [Telegram Protocol](#telegram-bot--mini-app-protocol) • [Quickstart](#quickstart-guide) • [API Reference](#api-specification)
 
 </div>
 
 ---
 
-## 📖 Executive Summary & Philosophy
+## Executive Summary & Philosophy
 
-In Japanese tradition, **Mekiki (目利き)** refers to the master appraiser — an expert connoisseur possessing an exceptional, trained eye capable of piercing through imitation, surface illusions, and emotional hype to determine the intrinsic authenticity and value of an asset.
+**Mekiki** is an autonomous trading appraisal terminal designed to pierce through market noise, surface illusions, and emotional hype to determine the structural authenticity and trade quality of crypto assets.
 
 Modern crypto markets are drowned in synthetic noise:
 - **Black-Box Indicators**: Moving averages, RSI, and Bollinger Bands generate endless lagging, contradictory signals without multi-timeframe context.
@@ -38,7 +38,7 @@ All trade actions operate in a **safe-by-design simulated paper-trading engine**
 
 ---
 
-## ⚡ Key Value Propositions
+## Key Value Propositions
 
 | Dimension | Conventional Signal Bots & Trading Groups | Mekiki Autonomous Intelligence Terminal |
 | :--- | :--- | :--- |
@@ -52,7 +52,7 @@ All trade actions operate in a **safe-by-design simulated paper-trading engine**
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 Mekiki connects high-throughput market data ingestion, algorithmic microstructure extraction, an adversarial multi-agent LLM consensus pipeline, and a synchronized dual-surface interface.
 
@@ -115,7 +115,7 @@ Mekiki connects high-throughput market data ingestion, algorithmic microstructur
 
 ---
 
-## 🔬 Analytical Methodology & Conviction Calibration
+## Analytical Methodology & Conviction Calibration
 
 Mekiki's intelligence engine evaluates market conviction through a deterministic 4-phase pipeline:
 
@@ -146,15 +146,15 @@ The Lead Judge synthesizes both arguments and outputs a structured verdict:
 
 ---
 
-## 🎯 Core Platform Features
+## Core Platform Features
 
 ### 1. Real-Time Market Verdict Terminal
 - **Visual Verdict Cards**: Displays the primary trade stance (`Long`, `Short`, or `Neutral`), 0–100 conviction gauge, and Bull/Bear consensus split.
 - **Evidence Chips**: Tagged contextual catalysts classified by tone:
-  - 🟢 **Positive**: Spot CVD accumulation, structure break, negative funding discount.
-  - 🔴 **Negative**: Overhead supply block, aggressive distribution, open interest trap.
-  - 🟡 **Warning**: Macro volatility spike, BTC dominance expansion risk.
-  - ⚪ **Neutral**: Range-bound chop, balanced orderbook.
+  - **Positive**: Spot CVD accumulation, structure break, negative funding discount.
+  - **Negative**: Overhead supply block, aggressive distribution, open interest trap.
+  - **Warning**: Macro volatility spike, BTC dominance expansion risk.
+  - **Neutral**: Range-bound chop, balanced orderbook.
 - **Transparent Reasoning Drawer**: Click "View Reasoning" on any asset card to inspect the raw Bull Pass arguments, Bear Pass counter-arguments, Judge synthesis, and specific analytical modules called.
 
 ### 2. Market Discovery Radar (`/scan`)
@@ -177,7 +177,7 @@ The Lead Judge synthesizes both arguments and outputs a structured verdict:
 
 ---
 
-## 🤖 Telegram Bot & Mini App Protocol
+## Telegram Bot & Mini App Protocol
 
 Mekiki features a first-class Telegram integration powered by an optimized, sub-500ms reactive bot (`@mekiki_agent_bot`).
 
@@ -199,7 +199,7 @@ Mekiki features a first-class Telegram integration powered by an optimized, sub-
 
 ---
 
-## 💻 Tech Stack & Engineering
+## Tech Stack & Engineering
 
 Mekiki is engineered for high performance, strict type safety, and zero-latency execution:
 
@@ -213,7 +213,7 @@ Mekiki is engineered for high performance, strict type safety, and zero-latency 
 
 ---
 
-## 🚀 Quickstart Guide
+## Quickstart Guide
 
 ### Prerequisites
 - Node.js 18.17.0 or higher
@@ -266,7 +266,7 @@ Your Telegram bot will immediately start listening for commands and button click
 
 ---
 
-## 🔌 API Specification
+## API Specification
 
 Mekiki provides a lightweight REST API for programmatic consumption:
 
@@ -322,7 +322,7 @@ The production webhook handler for incoming Telegram Bot updates.
 
 ---
 
-## 🛡️ Risk Management & Safety Philosophy
+## Risk Management & Safety Philosophy
 
 Mekiki is engineered around strict safety and capital preservation principles:
 
@@ -333,7 +333,7 @@ Mekiki is engineered around strict safety and capital preservation principles:
 
 ---
 
-## ❓ Frequently Asked Questions (FAQ)
+## Frequently Asked Questions (FAQ)
 
 <details>
 <summary><b>Why does Mekiki output "Neutral" on so many assets?</b></summary>
@@ -355,13 +355,13 @@ Yes. While <code>npm run bot</code> uses long-polling for effortless local devel
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 <div align="center">
 
-Built with 👁️ for the future of on-chain trading intelligence.  
-**Mekiki (目利き) — Discerning Intelligence for Modern Markets.**
+Built for the future of on-chain trading intelligence.  
+**Mekiki — Discerning Intelligence for Modern Markets.**
 
 </div>
