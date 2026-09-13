@@ -3,7 +3,6 @@
 import * as React from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
-import { RealtimeTickerBar } from "@/components/realtime-ticker-bar"
 import { MarketHero } from "@/components/market-hero"
 import { VerdictGrid } from "@/components/verdict-grid"
 import { JournalTable } from "@/components/journal-table"
@@ -139,9 +138,6 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground dark:bg-[#07080c] flex flex-col selection:bg-[#2952FF] selection:text-white transition-colors duration-200">
       {/* Navigation */}
       <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
-
-      {/* Real-time CoinGecko token ticker ribbon */}
-      <RealtimeTickerBar />
 
       {/* Hero section with market regime and 3D coil flourish */}
       <MarketHero
