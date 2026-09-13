@@ -25,6 +25,7 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
     { id: "hero", label: "Overview", href: "#hero" },
     { id: "verdicts", label: "Verdicts", href: "#verdicts" },
     { id: "journal", label: "Journal", href: "#journal" },
+    { id: "signals", label: "Live Signals", href: "#signals" },
     { id: "methodology", label: "Methodology", href: "#methodology" },
     { id: "performance", label: "Performance", href: "#performance" },
     { id: "protocol", label: "Protocol", href: "#protocol" },

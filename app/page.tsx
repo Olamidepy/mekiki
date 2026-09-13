@@ -7,6 +7,7 @@ import { MarketHero } from "@/components/market-hero"
 import { VerdictGrid } from "@/components/verdict-grid"
 import { JournalTable } from "@/components/journal-table"
 import { WatchlistPanel } from "@/components/watchlist-panel"
+import { LiveSignalStream } from "@/components/live-signal-stream"
 import { ReasoningDialog } from "@/components/reasoning-dialog"
 import { PracticeTradeModal } from "@/components/practice-trade-modal"
 import { ScanDialog } from "@/components/scan-dialog"
@@ -116,6 +117,9 @@ export default function Home() {
             />
           </div>
         </div>
+
+        {/* Live Simulation Signal Stream in Motion */}
+        <LiveSignalStream onPracticeTrade={handlePracticeTrade} />
 
         {/* Deep Long-Read Sections: Methodology, Performance, Protocol, FAQ */}
         <IntelDocumentation />
