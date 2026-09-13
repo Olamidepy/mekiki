@@ -16,16 +16,25 @@ export function VerdictGrid({
   onPracticeTrade,
 }: VerdictGridProps) {
   const [filter, setFilter] = React.useState<"all" | "Long" | "Neutral" | "Short">("all")
+  const [networkFilter, setNetworkFilter] = React.useState<string>("all")
+
+  const networks = ["all", "Base", "Solana", "TON", "Arbitrum", "Hyperliquid", "Sui"]
 
   const filteredVerdicts = React.useMemo(() => {
-    if (filter === "all") return verdicts
-    return verdicts.filter((v) => v.stance === filter)
-  }, [verdicts, filter])
+    return verdicts.filter((v) => {
+      const matchStance = filter === "all" ? true : v.stance === filter
+      const matchNetwork =
+        networkFilter === "all"
+          ? true
+          : v.network?.toLowerCase() === networkFilter.toLowerCase()
+      return matchStance && matchNetwork
+    })
+  }, [verdicts, filter, networkFilter])
 
   return (
     <div id="verdicts" className="mb-24 md:mb-36">
       {/* Section Header with generous white space */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-8 md:mb-12 pb-6 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-6 md:mb-8 pb-6 border-b border-slate-100">
         <div>
           <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Today's verdicts
@@ -55,12 +64,35 @@ export function VerdictGrid({
           </div>
 
           <button
-            onClick={() => setFilter("all")}
+            onClick={() => {
+              setFilter("all")
+              setNetworkFilter("all")
+            }}
             className="text-xs text-[#2952FF] font-semibold hover:underline px-1 sm:px-2"
           >
-            See all ({verdicts.length})
+            Reset ({filteredVerdicts.length}/{verdicts.length})
           </button>
         </div>
+      </div>
+
+      {/* Network Ecosystem Filter Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-none">
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider shrink-0 mr-1">
+          Ecosystem:
+        </span>
+        {networks.map((net) => (
+          <button
+            key={net}
+            onClick={() => setNetworkFilter(net)}
+            className={`shrink-0 text-xs font-medium px-3.5 py-1.5 rounded-full border transition-all ${
+              networkFilter === net
+                ? "bg-[#2952FF] text-white border-[#2952FF] shadow-sm font-semibold"
+                : "bg-white text-slate-600 border-slate-200/80 hover:border-slate-300 hover:text-slate-900"
+            }`}
+          >
+            {net === "all" ? "All Ecosystems" : net}
+          </button>
+        ))}
       </div>
 
       {/* Grid of Cards */}

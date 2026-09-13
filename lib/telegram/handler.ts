@@ -148,30 +148,45 @@ export async function processTelegramUpdate(update: TelegramUpdate) {
 👋 <b>Welcome to Mekiki (目利き)</b>
 <i>Telegram-Native Trading Intelligence Agent</i>
 
-Mekiki scans the market, weighs onchain & orderflow evidence across opposing agents (Bull vs. Bear), and presents high-conviction verdicts before you risk capital.
+Mekiki scans cross-chain orderflow, weighs onchain & microstructure evidence across opposing agents (Bull vs. Bear), and presents calibrated conviction before you risk capital.
+
+<b>Supported Ecosystems:</b>
+🌐 <b>Base:</b> AERO, BRETT, DEGEN
+🌐 <b>Solana:</b> SOL, RENDER, JUP
+🌐 <b>TON:</b> TON (Telegram Native)
+🌐 <b>Hyperliquid:</b> HYPE (Onchain Perps)
+🌐 <b>Sui:</b> SUI (Move L1)
+🌐 <b>Arbitrum:</b> ARB (L2 DeFi)
 
 <b>Available Commands:</b>
-• <code>/scan</code> — Real-time liquidity & momentum anomalies
-• <code>/verdict SOL</code> — Deep dual-agent verdict (SOL, BTC, ETH, SUI, etc.)
-• <code>/paper long SOL</code> — Open a practice simulated trade
+• <code>/scan</code> — Real-time multi-chain liquidity & momentum anomalies
+• <code>/verdict &lt;symbol&gt;</code> — Dual-agent verdict (e.g. <code>/verdict AERO</code>, <code>/verdict TON</code>, <code>/verdict HYPE</code>)
+• <code>/paper long &lt;symbol&gt;</code> — Open a practice simulated trade
 • <code>/journal</code> — View your live practice trade journal & win rate
 • <code>/regime</code> — Global market regime, Fear & Greed, BTC Dominance
 
-<i>Tap an action below to get started:</i>
+<i>Tap an ecosystem asset below for instantaneous reasoning:</i>
 `.trim()
 
         const replyMarkup = {
           inline_keyboard: [
             [
-              { text: "🔍 Scan Market", callback_data: "act:scan" },
-              { text: "⚡ Verdict SOL", callback_data: "act:verdict:SOL" },
-            ],
-            [
-              { text: "⚡ Verdict BTC", callback_data: "act:verdict:BTC" },
-              { text: "⚡ Verdict ETH", callback_data: "act:verdict:ETH" },
-            ],
-            [
+              { text: "🔍 Scan Multi-Chain", callback_data: "act:scan" },
               { text: "📓 Decision Journal", callback_data: "act:journal" },
+            ],
+            [
+              { text: "⚡ SOL (Solana)", callback_data: "act:verdict:SOL" },
+              { text: "⚡ AERO (Base)", callback_data: "act:verdict:AERO" },
+            ],
+            [
+              { text: "⚡ TON (Telegram)", callback_data: "act:verdict:TON" },
+              { text: "⚡ HYPE (Hyperliquid)", callback_data: "act:verdict:HYPE" },
+            ],
+            [
+              { text: "⚡ SUI (Sui)", callback_data: "act:verdict:SUI" },
+              { text: "⚡ ARB (Arbitrum)", callback_data: "act:verdict:ARB" },
+            ],
+            [
               getWebButton("🌐 Open Web Terminal"),
             ],
           ],
@@ -276,16 +291,28 @@ Mekiki scans the market, weighs onchain & orderflow evidence across opposing age
 I recognized your query: "<i>${text}</i>".
 
 <b>Mekiki Quick Actions:</b>
-• Type <code>/verdict SOL</code> (or BTC, ETH, SUI) to get instant dual-agent analysis.
-• Type <code>/scan</code> to see top market movers.
-• Type <code>/paper long SOL</code> to practice trading.
+• Type <code>/verdict AERO</code> (Base), <code>/verdict TON</code> (Telegram), <code>/verdict HYPE</code> (Hyperliquid), <code>/verdict SUI</code> (Sui), <code>/verdict ARB</code> (Arbitrum), or <code>/verdict SOL</code> (Solana).
+• Type <code>/scan</code> to see top multi-chain market movers.
+• Type <code>/paper long &lt;symbol&gt;</code> to practice trading.
 `.trim()
 
       return await sendTelegramMessage(chatId, fallbackText, {
         inline_keyboard: [
           [
-            { text: "⚡ Verdict SOL", callback_data: "act:verdict:SOL" },
+            { text: "⚡ AERO (Base)", callback_data: "act:verdict:AERO" },
+            { text: "⚡ TON (TON)", callback_data: "act:verdict:TON" },
+          ],
+          [
+            { text: "⚡ HYPE (Hyperliquid)", callback_data: "act:verdict:HYPE" },
+            { text: "⚡ SUI (Sui)", callback_data: "act:verdict:SUI" },
+          ],
+          [
+            { text: "⚡ ARB (Arbitrum)", callback_data: "act:verdict:ARB" },
+            { text: "⚡ SOL (Solana)", callback_data: "act:verdict:SOL" },
+          ],
+          [
             { text: "🔍 Scan Market", callback_data: "act:scan" },
+            { text: "📓 View Journal", callback_data: "act:journal" },
           ],
         ],
       })

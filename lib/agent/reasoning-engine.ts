@@ -49,6 +49,11 @@ export async function generateVerdict(symbol: string): Promise<Verdict> {
     ETH: "Ethereum",
     SOL: "Solana",
     SUI: "Sui Network",
+    AERO: "Aerodrome Finance",
+    BRETT: "Brett",
+    TON: "Toncoin",
+    ARB: "Arbitrum",
+    HYPE: "Hyperliquid",
     INJ: "Injective",
     AVAX: "Avalanche",
     NEAR: "NEAR Protocol",
@@ -57,11 +62,33 @@ export async function generateVerdict(symbol: string): Promise<Verdict> {
     RENDER: "Render Network",
   }
 
+  const networkMap: Record<string, string> = {
+    AERO: "Base",
+    BRETT: "Base",
+    VIRTUAL: "Base",
+    DEGEN: "Base",
+    TON: "TON",
+    ARB: "Arbitrum",
+    GMX: "Arbitrum",
+    PENDLE: "Arbitrum",
+    HYPE: "Hyperliquid",
+    PURR: "Hyperliquid",
+    SUI: "Sui",
+    SOL: "Solana",
+    RENDER: "Solana",
+    BTC: "Bitcoin",
+    ETH: "Ethereum",
+    AVAX: "Avalanche",
+    INJ: "Injective",
+  }
+
   const tokenName = nameMap[cleanSymbol] || `${cleanSymbol} Protocol`
+  const network = networkMap[cleanSymbol] || "Crypto"
 
   return {
     id: `v-${cleanSymbol.toLowerCase()}-${Date.now()}`,
     symbol: cleanSymbol,
+    network,
     pair: `${cleanSymbol} / USDT`,
     name: tokenName,
     price: currentPrice,

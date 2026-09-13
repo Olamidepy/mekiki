@@ -21,6 +21,11 @@ const SYMBOL_MAP: Record<string, string> = {
   ETH: "ETHUSDT",
   SOL: "SOLUSDT",
   SUI: "SUIUSDT",
+  AERO: "AEROUSDT",
+  BRETT: "BRETTUSDT",
+  TON: "TONUSDT",
+  ARB: "ARBUSDT",
+  HYPE: "HYPEUSDT",
   INJ: "INJUSDT",
   AVAX: "AVAXUSDT",
   NEAR: "NEARUSDT",
@@ -61,7 +66,14 @@ export async function fetchLiveTicker(symbol: string): Promise<LiveTicker | null
       ETH: 3450,
       SOL: 188.5,
       SUI: 1.84,
+      AERO: 1.18,
+      BRETT: 0.088,
+      TON: 5.35,
+      ARB: 0.64,
+      HYPE: 24.50,
       INJ: 24.5,
+      AVAX: 28.6,
+      RENDER: 6.84,
     }
     const basePrice = defaultPrices[cleanSymbol] || 10.0
     return {
@@ -69,8 +81,8 @@ export async function fetchLiveTicker(symbol: string): Promise<LiveTicker | null
       pair: `${cleanSymbol} / USDT`,
       price: basePrice,
       change24h: 3.4,
-      high24h: Number((basePrice * 1.05).toFixed(2)),
-      low24h: Number((basePrice * 0.96).toFixed(2)),
+      high24h: Number((basePrice * 1.05).toFixed(basePrice < 1 ? 4 : 2)),
+      low24h: Number((basePrice * 0.96).toFixed(basePrice < 1 ? 4 : 2)),
       volume24h: 125000000,
     }
   }
@@ -99,7 +111,7 @@ export async function fetchFearAndGreed(): Promise<LiveFearAndGreed> {
 }
 
 export async function fetchTopMarketMovers(): Promise<LiveTicker[]> {
-  const tracked = ["SOL", "ETH", "BTC", "SUI", "INJ", "AVAX"]
+  const tracked = ["SOL", "AERO", "TON", "ARB", "HYPE", "SUI", "BTC", "ETH"]
   const results = await Promise.all(tracked.map((s) => fetchLiveTicker(s)))
   return results.filter((t): t is LiveTicker => t !== null)
 }

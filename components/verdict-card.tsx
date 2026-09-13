@@ -55,9 +55,16 @@ export function VerdictCard({
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-slate-900 tracking-tight group-hover:text-[#2952FF] transition-colors duration-200">
-                {verdict.pair}
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-base font-bold text-slate-900 tracking-tight group-hover:text-[#2952FF] transition-colors duration-200">
+                  {verdict.pair}
+                </h3>
+                {verdict.network && (
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/60">
+                    {verdict.network}
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-muted-foreground font-medium">{verdict.name}</p>
             </div>
             <Badge

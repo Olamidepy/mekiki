@@ -16,6 +16,7 @@ export const mockVerdicts: Verdict[] = [
     id: "verdict-sol",
     symbol: "SOL",
     name: "Solana",
+    network: "Solana",
     pair: "SOL / USDT",
     stance: "Long",
     conviction: 78,
@@ -51,9 +52,199 @@ export const mockVerdicts: Verdict[] = [
     timestamp: "18 mins ago"
   },
   {
+    id: "verdict-aero",
+    symbol: "AERO",
+    name: "Aerodrome Finance",
+    network: "Base",
+    pair: "AERO / USDT",
+    stance: "Long",
+    conviction: 76,
+    bullPercent: 74,
+    bearPercent: 26,
+    price: 1.18,
+    change24h: 6.4,
+    volume24h: "$185M",
+    evidence: [
+      { id: "ea1", label: "Base TVL leader", tone: "positive", category: "onchain" },
+      { id: "ea2", label: "veAERO lockup ATH", tone: "positive", category: "onchain" },
+      { id: "ea3", label: "Negative funding", tone: "positive", category: "momentum" },
+      { id: "ea4", label: "Token emission cliff", tone: "warning", category: "volatility" },
+    ],
+    reasoning: {
+      ryoToolsUsed: ["analyze_token", "deep_analysis", "market_overview"],
+      bullCase: [
+        "Aerodrome captures over 55% of all Base DEX swaps, generating record veAERO organic fee yields.",
+        "Cumulative Volume Delta (CVD) confirms institutional accumulator addresses absorbing post-emission dips.",
+        "Base active address growth accelerates via Coinbase smart wallet onboarding."
+      ],
+      bearCase: [
+        "Weekly emission dilution requires steady TVL expansion to maintain bribe equilibrium.",
+        "Short-term resistance cluster located at $1.26-$1.30 supply zone."
+      ],
+      judgeRuling: "Conviction stands at 76/100 for Long. Asymmetric beta to Base ecosystem expansion. Entry sweet spot located between $1.12–$1.16 with tight invalidation.",
+      invalidationCriteria: [
+        "Loss of structural 4H anchor at $1.08",
+        "Significant drop in weekly trading volume on Base liquidity pools"
+      ]
+    },
+    timestamp: "24 mins ago"
+  },
+  {
+    id: "verdict-hype",
+    symbol: "HYPE",
+    name: "Hyperliquid",
+    network: "Hyperliquid",
+    pair: "HYPE / USDT",
+    stance: "Long",
+    conviction: 83,
+    bullPercent: 81,
+    bearPercent: 19,
+    price: 24.50,
+    change24h: 11.2,
+    volume24h: "$620M",
+    evidence: [
+      { id: "eh1", label: "Perp volume ATH", tone: "positive", category: "momentum" },
+      { id: "eh2", label: "HyperEVM catalyst", tone: "positive", category: "sentiment" },
+      { id: "eh3", label: "Orderbook bid depth ↑", tone: "positive", category: "onchain" },
+      { id: "eh4", label: "Elevated OI", tone: "warning", category: "volatility" },
+    ],
+    reasoning: {
+      ryoToolsUsed: ["analyze_token", "deep_analysis", "monitor_market_sentiment_shift"],
+      bullCase: [
+        "Hyperliquid has captured unmatched on-chain perpetual volume with genuine zero-gas orderbook liquidity.",
+        "HyperEVM deployment triggers massive builder migration and native asset locking.",
+        "Perpetual funding rate divergence shows spot bids leading aggressive short liquidations."
+      ],
+      bearCase: [
+        "Open interest has grown 22% over 48 hours, raising flash-deleveraging sensitivity.",
+        "Psychological resistance at $26.00 round figure."
+      ],
+      judgeRuling: "Conviction is 83/100 for Long. The strongest microstructure profile across all tracked perps venues. Favor positioning on 15m dips into the $23.20–$23.80 zone.",
+      invalidationCriteria: [
+        "Breach below 4H structural demand block at $22.10",
+        "Macro liquidation event with BTC dropping > 4%"
+      ]
+    },
+    timestamp: "32 mins ago"
+  },
+  {
+    id: "verdict-ton",
+    symbol: "TON",
+    name: "Toncoin",
+    network: "TON",
+    pair: "TON / USDT",
+    stance: "Long",
+    conviction: 71,
+    bullPercent: 67,
+    bearPercent: 33,
+    price: 5.35,
+    change24h: 3.8,
+    volume24h: "$490M",
+    evidence: [
+      { id: "et1", label: "Telegram Mini-Apps ↑", tone: "positive", category: "sentiment" },
+      { id: "et2", label: "Custodial wallet MAU ATH", tone: "positive", category: "onchain" },
+      { id: "et3", label: "Range resistance test", tone: "warning", category: "momentum" },
+    ],
+    reasoning: {
+      ryoToolsUsed: ["analyze_token", "deep_analysis", "market_overview"],
+      bullCase: [
+        "Direct integration with 900M+ Telegram users provides unmatched organic funnel for crypto adoption.",
+        "USDT-TON on-chain volume surpasses $1B monthly velocity with low slippage.",
+        "Daily active wallets holding steady above 4.2M addresses."
+      ],
+      bearCase: [
+        "Testing key multi-month range resistance at $5.60.",
+        "Ecosystem token unlocks creating moderate rotation pressure."
+      ],
+      judgeRuling: "Conviction 71/100 Long. Strong macro catalyst and sticky retail utility. Look for daily close confirmation above $5.45 or accumulation near $5.10.",
+      invalidationCriteria: [
+        "Daily close below 50-day EMA ($4.95)",
+        "Sharp drop in Telegram bot active sessions"
+      ]
+    },
+    timestamp: "40 mins ago"
+  },
+  {
+    id: "verdict-sui",
+    symbol: "SUI",
+    name: "Sui Network",
+    network: "Sui",
+    pair: "SUI / USDT",
+    stance: "Long",
+    conviction: 75,
+    bullPercent: 73,
+    bearPercent: 27,
+    price: 1.84,
+    change24h: 8.6,
+    volume24h: "$540M",
+    evidence: [
+      { id: "es1", label: "Move DeFi TVL ATH", tone: "positive", category: "onchain" },
+      { id: "es2", label: "Clean 4H Breakout", tone: "positive", category: "momentum" },
+      { id: "es3", label: "Positive funding drift", tone: "positive", category: "sentiment" },
+      { id: "es4", label: "Overbought 1H RSI", tone: "warning", category: "volatility" },
+    ],
+    reasoning: {
+      ryoToolsUsed: ["analyze_token", "deep_analysis", "monitor_market_sentiment_shift"],
+      bullCase: [
+        "Total Value Locked on Sui Move protocols crossed $1B with sustained lending market utilization.",
+        "Breakout above multi-week accumulation range with expanding volume signature.",
+        "CVD spot accumulation divergence showing clean institutional rotation from older L1s."
+      ],
+      bearCase: [
+        "1-hour RSI reaching 74, indicating potential for short-term retest of the breakout level.",
+        "Upcoming scheduled ecosystem grant distribution."
+      ],
+      judgeRuling: "Conviction 75/100 Long. Clear relative strength leader among alternative L1 networks. Asymmetry supports bidding retests of $1.74–$1.78.",
+      invalidationCriteria: [
+        "Failure to hold retest level at $1.70 on 4-hour close",
+        "Aggressive spot selling delta flipping negative"
+      ]
+    },
+    timestamp: "52 mins ago"
+  },
+  {
+    id: "verdict-arb",
+    symbol: "ARB",
+    name: "Arbitrum",
+    network: "Arbitrum",
+    pair: "ARB / USDT",
+    stance: "Neutral",
+    conviction: 58,
+    bullPercent: 54,
+    bearPercent: 46,
+    price: 0.64,
+    change24h: 1.2,
+    volume24h: "$310M",
+    evidence: [
+      { id: "ear1", label: "Largest L2 TVL", tone: "positive", category: "onchain" },
+      { id: "ear2", label: "Stylus adoption", tone: "positive", category: "sentiment" },
+      { id: "ear3", label: "Unlock overhang", tone: "warning", category: "volatility" },
+      { id: "ear4", label: "Range compression", tone: "neutral", category: "volatility" },
+    ],
+    reasoning: {
+      ryoToolsUsed: ["market_overview", "deep_analysis", "compare_tokens"],
+      bullCase: [
+        "Maintains dominant $13B+ Layer 2 ecosystem TVL and high fee capture from on-chain perps venues.",
+        "Arbitrum Stylus enabling C/C++/Rust smart contracts drives developer interest.",
+        "Negative funding rates on perpetuals suggest crowded retail shorts."
+      ],
+      bearCase: [
+        "Scheduled monthly investor/team token unlocks dampen upside momentum.",
+        "Price action trapped in long-duration sideways accumulation band between $0.58 and $0.72."
+      ],
+      judgeRuling: "Conviction 58/100 Neutral. Strong fundamental ecosystem metrics weighed down by circulating supply inflation. Awaiting clean volume breakout above $0.72 before allocating active capital.",
+      invalidationCriteria: [
+        "Decisive close above $0.72 resistance",
+        "Breakdown below macro floor at $0.56"
+      ]
+    },
+    timestamp: "1 hour ago"
+  },
+  {
     id: "verdict-eth",
     symbol: "ETH",
     name: "Ethereum",
+    network: "Ethereum",
     pair: "ETH / USDT",
     stance: "Long",
     conviction: 64,
@@ -83,12 +274,13 @@ export const mockVerdicts: Verdict[] = [
         "Breakdown below $3,310 support anchor"
       ]
     },
-    timestamp: "45 mins ago"
+    timestamp: "1 hour ago"
   },
   {
     id: "verdict-btc",
     symbol: "BTC",
     name: "Bitcoin",
+    network: "Bitcoin",
     pair: "BTC / USDT",
     stance: "Neutral",
     conviction: 51,
@@ -118,12 +310,13 @@ export const mockVerdicts: Verdict[] = [
         "Aggregate ETF net inflow/outflow delta exceeding $350M in a single session"
       ]
     },
-    timestamp: "1 hour ago"
+    timestamp: "2 hours ago"
   },
   {
     id: "verdict-render",
     symbol: "RENDER",
     name: "Render",
+    network: "Solana",
     pair: "RENDER / USDT",
     stance: "Long",
     conviction: 70,
@@ -235,6 +428,7 @@ export const mockWatchlist: WatchlistItem[] = [
     id: "w1",
     symbol: "SOL",
     name: "Solana",
+    network: "Solana",
     conviction: 81,
     trend: "up",
     stance: "Long",
@@ -243,69 +437,105 @@ export const mockWatchlist: WatchlistItem[] = [
   },
   {
     id: "w2",
-    symbol: "RENDER",
-    name: "Render",
-    conviction: 70,
+    symbol: "HYPE",
+    name: "Hyperliquid",
+    network: "Hyperliquid",
+    conviction: 83,
     trend: "up",
     stance: "Long",
-    change24h: 7.8,
-    price: 6.84
+    change24h: 11.2,
+    price: 24.50
   },
   {
     id: "w3",
-    symbol: "TAO",
-    name: "Bittensor",
-    conviction: 55,
-    trend: "neutral",
-    stance: "Neutral",
-    change24h: 1.2,
-    price: 340.50
+    symbol: "AERO",
+    name: "Aerodrome Finance",
+    network: "Base",
+    conviction: 76,
+    trend: "up",
+    stance: "Long",
+    change24h: 6.4,
+    price: 1.18
   },
   {
     id: "w4",
-    symbol: "SUI",
-    name: "Sui Network",
-    conviction: 68,
+    symbol: "TON",
+    name: "Toncoin",
+    network: "TON",
+    conviction: 71,
     trend: "up",
     stance: "Long",
-    change24h: 3.9,
-    price: 1.94
+    change24h: 3.8,
+    price: 5.35
   },
   {
     id: "w5",
-    symbol: "AVAX",
-    name: "Avalanche",
-    conviction: 62,
-    trend: "neutral",
+    symbol: "SUI",
+    name: "Sui Network",
+    network: "Sui",
+    conviction: 75,
+    trend: "up",
     stance: "Long",
-    change24h: 0.8,
-    price: 31.10
+    change24h: 8.6,
+    price: 1.84
+  },
+  {
+    id: "w6",
+    symbol: "ARB",
+    name: "Arbitrum",
+    network: "Arbitrum",
+    conviction: 58,
+    trend: "neutral",
+    stance: "Neutral",
+    change24h: 1.2,
+    price: 0.64
   }
 ]
 
 export const mockScanCandidates: ScanCandidate[] = [
   {
+    symbol: "HYPE",
+    name: "Hyperliquid",
+    network: "Hyperliquid",
+    score: 88,
+    stance: "Long",
+    rationale: "HyperEVM mainnet readiness with record perps market share and aggressive spot accumulation.",
+    catalyst: "Record daily on-chain derivatives volume ($2.8B+) and ecosystem fee revenue"
+  },
+  {
+    symbol: "AERO",
+    name: "Aerodrome Finance",
+    network: "Base",
+    score: 82,
+    stance: "Long",
+    rationale: "Unusual spot accumulation on Base DEX pools with veAERO voting yield expansion.",
+    catalyst: "Base on-chain swap volume ATH and Coinbase smart wallet mass onboarding"
+  },
+  {
+    symbol: "SUI",
+    name: "Sui Network",
+    network: "Sui",
+    score: 79,
+    stance: "Long",
+    rationale: "Compression breakout with clean 4H structural break and heavy spot CVD divergence.",
+    catalyst: "Move TVL passing $1B milestone and institutional custodian integration"
+  },
+  {
+    symbol: "TON",
+    name: "Toncoin",
+    network: "TON",
+    score: 75,
+    stance: "Long",
+    rationale: "Steady wallet accumulation against Telegram mini-app payment volume surge.",
+    catalyst: "USDT-TON velocity surpassing $1.2B and 4M+ daily active addresses"
+  },
+  {
     symbol: "SOL",
     name: "Solana",
+    network: "Solana",
     score: 84,
     stance: "Long",
     rationale: "Unusual spot accumulation and breakout from 14-day accumulation range.",
     catalyst: "Record weekly DEX volume and validator staking expansion"
-  },
-  {
-    symbol: "RENDER",
-    name: "Render",
-    score: 76,
-    stance: "Long",
-    rationale: "Leading relative strength in compute sector with social velocity spike.",
-    catalyst: "Decentralized GPU demand surge and network utilization ATH"
-  },
-  {
-    symbol: "INJ",
-    name: "Injective",
-    score: 71,
-    stance: "Long",
-    rationale: "Compression squeeze resolving upward with positive on-chain funding drift.",
-    catalyst: "Derivatives volume breakout and ecosystem liquidity incentives"
   }
 ]

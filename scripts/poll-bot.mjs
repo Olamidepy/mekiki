@@ -141,11 +141,13 @@ function getWebButton(text = "🌐 Web Terminal") {
 // Pre-cached market data
 const priceCache = new Map([
   ["SOL", { symbol: "SOL", price: 188.45, change24h: 4.8, high24h: 194.2, low24h: 182.1, volume24h: 380000000 }],
+  ["AERO", { symbol: "AERO", price: 1.18, change24h: 6.4, high24h: 1.25, low24h: 1.11, volume24h: 185000000 }],
+  ["TON", { symbol: "TON", price: 5.35, change24h: 3.8, high24h: 5.48, low24h: 5.16, volume24h: 490000000 }],
+  ["ARB", { symbol: "ARB", price: 0.64, change24h: 1.2, high24h: 0.67, low24h: 0.62, volume24h: 310000000 }],
+  ["HYPE", { symbol: "HYPE", price: 24.50, change24h: 11.2, high24h: 25.80, low24h: 22.10, volume24h: 620000000 }],
+  ["SUI", { symbol: "SUI", price: 1.84, change24h: 8.6, high24h: 1.92, low24h: 1.72, volume24h: 540000000 }],
   ["BTC", { symbol: "BTC", price: 64520.0, change24h: 2.1, high24h: 65100, low24h: 63800, volume24h: 1850000000 }],
   ["ETH", { symbol: "ETH", price: 3465.5, change24h: -1.2, high24h: 3550, low24h: 3420, volume24h: 890000000 }],
-  ["SUI", { symbol: "SUI", price: 1.86, change24h: 8.4, high24h: 1.92, low24h: 1.74, volume24h: 240000000 }],
-  ["INJ", { symbol: "INJ", price: 24.8, change24h: 5.2, high24h: 25.6, low24h: 23.9, volume24h: 110000000 }],
-  ["AVAX", { symbol: "AVAX", price: 28.6, change24h: 3.1, high24h: 29.4, low24h: 27.5, volume24h: 165000000 }],
 ])
 
 function getPrice(symbol) {
@@ -153,10 +155,10 @@ function getPrice(symbol) {
   return (
     priceCache.get(clean) || {
       symbol: clean,
-      price: 100,
+      price: 10.0,
       change24h: 3.5,
-      high24h: 105,
-      low24h: 96,
+      high24h: 10.5,
+      low24h: 9.6,
       volume24h: 50000000,
     }
   )
@@ -164,7 +166,7 @@ function getPrice(symbol) {
 
 // Background Price Refresher
 async function refreshPrices() {
-  for (const sym of ["SOL", "BTC", "ETH", "SUI", "INJ", "AVAX"]) {
+  for (const sym of ["SOL", "AERO", "TON", "ARB", "HYPE", "SUI", "BTC", "ETH"]) {
     try {
       const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${sym}USDT`, {
         signal: AbortSignal.timeout(2000),
@@ -406,30 +408,45 @@ async function sendWelcome(chatId, messageId) {
 👋 <b>Welcome to Mekiki (目利き)</b>
 <i>Telegram-Native Multi-Agent Trading Intelligence Terminal</i>
 
-Mekiki pits opposing agents (Bull vs. Bear) against live market evidence, computes an objective conviction score, and sets strict structural invalidation stops before you risk capital.
+Mekiki pits opposing agents (Bull vs. Bear) against live market evidence across multiple ecosystems, computes an objective conviction score, and sets strict structural invalidation stops before you risk capital.
+
+<b>Supported Ecosystems:</b>
+🌐 <b>Base:</b> AERO, BRETT, DEGEN
+🌐 <b>Solana:</b> SOL, RENDER, JUP
+🌐 <b>TON:</b> TON (Telegram Native)
+🌐 <b>Hyperliquid:</b> HYPE (Onchain Perps)
+🌐 <b>Sui:</b> SUI (Move L1)
+🌐 <b>Arbitrum:</b> ARB (L2 DeFi)
 
 <b>Core Commands:</b>
-• <code>/scan</code> — Top liquidity & volume anomalies
-• <code>/verdict SOL</code> — Dual-agent consensus verdict (SOL, BTC, ETH, SUI)
-• <code>/paper long SOL</code> — Open a practice simulated trade
+• <code>/scan</code> — Top multi-chain liquidity & volume anomalies
+• <code>/verdict &lt;symbol&gt;</code> — Dual-agent consensus verdict (SOL, AERO, TON, HYPE, SUI, ARB)
+• <code>/paper long &lt;symbol&gt;</code> — Open a practice simulated trade
 • <code>/journal</code> — View your live decision journal & win rate
 • <code>/regime</code> — Fear & Greed index and BTC dominance
 
-<i>Tap any action below to begin:</i>
+<i>Tap any ecosystem asset below to begin:</i>
 `.trim()
 
   return editOrSendMessage(chatId, messageId, welcome, {
     inline_keyboard: [
       [
-        { text: "🔍 Scan Market", callback_data: "act:scan" },
-        { text: "⚡ Verdict SOL", callback_data: "act:verdict:SOL" },
+        { text: "⚡ SOL (Solana)", callback_data: "act:verdict:SOL" },
+        { text: "⚡ AERO (Base)", callback_data: "act:verdict:AERO" },
       ],
       [
-        { text: "⚡ Verdict BTC", callback_data: "act:verdict:BTC" },
-        { text: "⚡ Verdict ETH", callback_data: "act:verdict:ETH" },
+        { text: "⚡ TON (Telegram)", callback_data: "act:verdict:TON" },
+        { text: "⚡ HYPE (Hyperliquid)", callback_data: "act:verdict:HYPE" },
       ],
       [
+        { text: "⚡ SUI (Sui)", callback_data: "act:verdict:SUI" },
+        { text: "⚡ ARB (Arbitrum)", callback_data: "act:verdict:ARB" },
+      ],
+      [
+        { text: "🔍 Scan Multi-Chain", callback_data: "act:scan" },
         { text: "📓 Decision Journal", callback_data: "act:journal" },
+      ],
+      [
         getWebButton("🌐 Open Web Terminal"),
       ],
     ],
@@ -447,15 +464,15 @@ async function sendVerdict(chatId, symbol, messageId) {
   const changeEmoji = ticker.change24h >= 0 ? "+" : ""
 
   const takeProfit = isLong
-    ? (ticker.price * 1.085).toFixed(ticker.price > 100 ? 2 : 4)
-    : (ticker.price * 0.915).toFixed(ticker.price > 100 ? 2 : 4)
+    ? (ticker.price * 1.085).toFixed(ticker.price > 100 ? 2 : ticker.price < 1 ? 4 : 2)
+    : (ticker.price * 0.915).toFixed(ticker.price > 100 ? 2 : ticker.price < 1 ? 4 : 2)
 
   const stopLoss = isLong
-    ? (ticker.price * 0.962).toFixed(ticker.price > 100 ? 2 : 4)
-    : (ticker.price * 1.038).toFixed(ticker.price > 100 ? 2 : 4)
+    ? (ticker.price * 0.962).toFixed(ticker.price > 100 ? 2 : ticker.price < 1 ? 4 : 2)
+    : (ticker.price * 1.038).toFixed(ticker.price > 100 ? 2 : ticker.price < 1 ? 4 : 2)
 
-  const highStr = (ticker.high24h != null ? ticker.high24h : ticker.price * 1.05).toFixed(2)
-  const lowStr = (ticker.low24h != null ? ticker.low24h : ticker.price * 0.95).toFixed(2)
+  const highStr = (ticker.high24h != null ? ticker.high24h : ticker.price * 1.05).toFixed(ticker.price < 1 ? 4 : 2)
+  const lowStr = (ticker.low24h != null ? ticker.low24h : ticker.price * 0.95).toFixed(ticker.price < 1 ? 4 : 2)
   const volStr = ((ticker.volume24h != null ? ticker.volume24h : 50000000) / 1e6).toFixed(1)
 
   const card = `
@@ -494,7 +511,7 @@ ${
 }
 
 async function sendScan(chatId, messageId) {
-  const symbols = ["SOL", "ETH", "BTC", "SUI", "INJ", "AVAX"]
+  const symbols = ["SOL", "AERO", "TON", "ARB", "HYPE", "SUI", "BTC", "ETH"]
   const tickers = symbols.map((s) => getPrice(s))
 
   const rows = tickers
@@ -505,8 +522,8 @@ async function sendScan(chatId, messageId) {
     .join("\n")
 
   const text = `
-🔍 <b>MEKIKI REAL-TIME MARKET SCAN</b>
-<i>Live Anomalies from Mekiki Market Radar:</i>
+🔍 <b>MEKIKI MULTI-CHAIN MARKET SCAN</b>
+<i>Live Anomalies from Mekiki Cross-Chain Radar:</i>
 
 ${rows}
 
@@ -517,13 +534,13 @@ ${rows}
     inline_keyboard: [
       [
         { text: "⚡ SOL", callback_data: "act:verdict:SOL" },
-        { text: "⚡ ETH", callback_data: "act:verdict:ETH" },
-        { text: "⚡ BTC", callback_data: "act:verdict:BTC" },
+        { text: "⚡ AERO", callback_data: "act:verdict:AERO" },
+        { text: "⚡ TON", callback_data: "act:verdict:TON" },
       ],
       [
+        { text: "⚡ HYPE", callback_data: "act:verdict:HYPE" },
         { text: "⚡ SUI", callback_data: "act:verdict:SUI" },
-        { text: "⚡ INJ", callback_data: "act:verdict:INJ" },
-        { text: "⚡ AVAX", callback_data: "act:verdict:AVAX" },
+        { text: "⚡ ARB", callback_data: "act:verdict:ARB" },
       ],
       [
         { text: "📓 View Journal", callback_data: "act:journal" },

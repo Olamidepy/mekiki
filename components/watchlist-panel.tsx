@@ -134,9 +134,16 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
               className="flex items-center justify-between p-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
             >
               <div>
-                <span className="text-sm font-semibold tracking-tight text-slate-900 block">
-                  {item.symbol}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-semibold tracking-tight text-slate-900 block">
+                    {item.symbol}
+                  </span>
+                  {item.network && (
+                    <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200/50">
+                      {item.network}
+                    </span>
+                  )}
+                </div>
                 <span className="text-xs text-muted-foreground font-normal">
                   {item.name}
                 </span>

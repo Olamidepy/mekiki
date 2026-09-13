@@ -21,6 +21,7 @@ export interface Verdict {
   id: string
   symbol: string
   name: string
+  network?: string // e.g. 'Base', 'TON', 'Arbitrum', 'Hyperliquid', 'Sui', 'Solana'
   pair: string
   stance: Stance
   conviction: number // 0-100
@@ -44,6 +45,7 @@ export interface JournalEntry {
   id: string
   symbol: string
   name: string
+  network?: string
   call: Stance
   timestamp: string
   timeAgo: string
@@ -59,6 +61,7 @@ export interface WatchlistItem {
   id: string
   symbol: string
   name: string
+  network?: string
   conviction: number
   trend: 'up' | 'down' | 'neutral'
   stance: Stance
@@ -80,6 +83,7 @@ export interface MarketRegimeStats {
 export interface ScanCandidate {
   symbol: string
   name: string
+  network?: string
   score: number
   rationale: string
   stance: Stance

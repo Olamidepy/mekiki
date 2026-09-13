@@ -75,6 +75,11 @@ export function ScanDialog({
                       {cand.symbol}
                     </span>
                     <span className="text-xs text-slate-400">{cand.name}</span>
+                    {cand.network && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/60">
+                        {cand.network}
+                      </span>
+                    )}
                     <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
                       {cand.stance}
                     </span>
