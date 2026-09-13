@@ -19,7 +19,7 @@ import {
   mockWatchlist,
   mockScanCandidates,
 } from "@/lib/mock-data"
-import { Verdict, JournalEntry, WatchlistItem } from "@/types"
+import { Verdict, JournalEntry, WatchlistItem, MarketRegimeStats } from "@/types"
 
 export default function Home() {
   const [activeTab, setActiveTab] = React.useState("overview")
