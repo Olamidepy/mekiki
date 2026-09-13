@@ -70,18 +70,18 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
               + Add token
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-[92vw] sm:max-w-sm p-4 sm:p-6 rounded-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="w-[92vw] sm:max-w-sm p-4 sm:p-6 rounded-2xl max-h-[90vh] overflow-y-auto bg-background dark:bg-slate-950 border-slate-200 dark:border-slate-800">
             <DialogHeader>
-              <DialogTitle className="text-base font-bold text-slate-900">
+              <DialogTitle className="text-base font-bold text-slate-900 dark:text-white">
                 Add token to watchlist
               </DialogTitle>
-              <DialogDescription className="text-xs text-slate-500">
+              <DialogDescription className="text-xs text-slate-500 dark:text-slate-400">
                 Mekiki will track conviction score shifts and notify on threshold crossings.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleAddToken} className="space-y-3.5 pt-2">
               <div>
-                <label className="text-xs font-medium text-slate-700 block mb-1">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block mb-1">
                   Token symbol (e.g. INJ, NEAR, SUI)
                 </label>
                 <input
@@ -89,12 +89,12 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
                   value={newSymbol}
                   onChange={(e) => setNewSymbol(e.target.value)}
                   placeholder="INJ"
-                  className="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-sm font-semibold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#2952FF]"
+                  className="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-700 bg-background dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl text-sm font-semibold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#2952FF]"
                   autoFocus
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-slate-700 block mb-1">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block mb-1">
                   Name (optional)
                 </label>
                 <input
@@ -102,7 +102,7 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder="Injective"
-                  className="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2952FF]"
+                  className="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-700 bg-background dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2952FF]"
                 />
               </div>
               <div className="flex flex-col gap-2 pt-2">
@@ -116,7 +116,7 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
                   type="button"
                   variant="outline"
                   onClick={() => setAddOpen(false)}
-                  className="w-full rounded-full text-xs"
+                  className="w-full rounded-full text-xs border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
                 >
                   Cancel
                 </Button>
@@ -131,15 +131,15 @@ export function WatchlistPanel({ items, onAddItem }: WatchlistPanelProps) {
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between p-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
+              className="flex items-center justify-between p-2 -mx-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
             >
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-semibold tracking-tight text-slate-900 block">
+                  <span className="text-sm font-semibold tracking-tight text-slate-900 dark:text-white block">
                     {item.symbol}
                   </span>
                   {item.network && (
-                    <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200/50">
+                    <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700">
                       {item.network}
                     </span>
                   )}

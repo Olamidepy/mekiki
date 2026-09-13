@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ModeToggle } from "@/components/mode-toggle"
 import {
   Sheet,
   SheetContent,
@@ -42,7 +43,7 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center">
@@ -57,7 +58,7 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
                 priority
               />
             </div>
-            <span className="font-bold text-lg sm:text-[19px] tracking-tight text-slate-900 inline-flex items-center">
+            <span className="font-bold text-lg sm:text-[19px] tracking-tight text-slate-900 dark:text-white inline-flex items-center">
               Mekiki
             </span>
           </Link>
@@ -74,8 +75,8 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
                 onClick={(e) => handleNavClick(item.id, e)}
                 className={`transition-colors font-medium ${
                   isActive
-                    ? "text-slate-900 font-semibold"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "text-slate-900 dark:text-white font-semibold"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 {item.label}
@@ -86,7 +87,10 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
 
         {/* Right side actions */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Action CTA: Direct link to Telegram Bot (hidden on tiny screens, or compact) */}
+          {/* Theme Mode Toggle Button (Desktop & Mobile) */}
+          <ModeToggle />
+
+          {/* Action CTA: Direct link to Telegram Bot */}
           <Button asChild variant="default" size="sm" className="h-9 px-3 sm:px-4 text-xs sm:text-sm font-medium">
             <a
               href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "mekiki_agent_bot"}`}
@@ -103,30 +107,32 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden h-9 w-9 text-slate-700 hover:text-slate-900 hover:bg-slate-100"
+                className="md:hidden h-9 w-9 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                 aria-label="Open navigation menu"
               >
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[80vw] max-w-sm flex flex-col justify-between">
+            <SheetContent side="right" className="w-[80vw] max-w-sm flex flex-col justify-between bg-background dark:bg-slate-950 border-slate-200 dark:border-slate-800">
               <div>
-                <SheetHeader className="text-left pb-6 border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src="/images/mekiki-icon.png"
-                      alt="Mekiki Logo"
-                      width={32}
-                      height={32}
-                      className="w-8 h-8 object-contain"
-                    />
-                    <SheetTitle className="font-bold text-lg text-slate-900">
-                      Mekiki
-                    </SheetTitle>
+                <SheetHeader className="text-left pb-6 border-b border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src="/images/mekiki-icon.png"
+                        alt="Mekiki Logo"
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 object-contain"
+                      />
+                      <SheetTitle className="font-bold text-lg text-slate-900 dark:text-white">
+                        Mekiki
+                      </SheetTitle>
+                    </div>
                   </div>
                 </SheetHeader>
 
-                <nav className="flex flex-col space-y-3 pt-6">
+                <nav className="flex flex-col space-y-2 pt-6">
                   {navItems.map((item) => {
                     const isActive = activeTab === item.id
                     return (
@@ -136,8 +142,8 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
                         onClick={(e) => handleNavClick(item.id, e)}
                         className={`text-base font-medium px-3 py-2 rounded-lg transition-colors ${
                           isActive
-                            ? "bg-slate-100 text-slate-900 font-semibold"
-                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                            ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-semibold"
+                            : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900"
                         }`}
                       >
                         {item.label}
@@ -147,7 +153,13 @@ export function Navbar({ activeTab = "overview", onTabChange }: NavbarProps) {
                 </nav>
               </div>
 
-              <div className="pt-6 border-t border-slate-100 space-y-3">
+              <div className="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                {/* Mobile Drawer Quick Theme Switcher */}
+                <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Appearance</span>
+                  <ModeToggle />
+                </div>
+
                 <Button asChild className="w-full bg-[#2952FF] hover:bg-[#1f3fd6] text-white">
                   <a
                     href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "mekiki_agent_bot"}`}

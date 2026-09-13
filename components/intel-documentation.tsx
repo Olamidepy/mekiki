@@ -56,7 +56,7 @@ export function IntelDocumentation() {
       <section id="methodology" className="space-y-8">
         <div className="max-w-3xl space-y-3">
           <Badge variant="outline">Architecture &amp; Methodology</Badge>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             How the intelligence engine evaluates market conviction
           </h2>
           <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />
@@ -122,7 +122,7 @@ export function IntelDocumentation() {
       <section id="performance" className="space-y-8">
         <div className="max-w-3xl space-y-3">
           <Badge variant="outline">Empirical Verification</Badge>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Performance attribution across historical market regimes
           </h2>
           <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />
@@ -155,13 +155,13 @@ export function IntelDocumentation() {
                 <TableBody>
                   {performanceData.map((row) => (
                     <TableRow key={row.regime}>
-                      <TableCell className="font-medium text-slate-900">
+                      <TableCell className="font-medium text-slate-900 dark:text-white">
                         {row.regime}
                       </TableCell>
                       <TableCell className="text-right font-mono text-xs">
                         {row.signals}
                       </TableCell>
-                      <TableCell className="text-right font-semibold text-emerald-600">
+                      <TableCell className="text-right font-semibold text-emerald-600 dark:text-emerald-400">
                         {row.winRate}
                       </TableCell>
                       <TableCell className="text-right font-mono text-xs">
@@ -173,7 +173,7 @@ export function IntelDocumentation() {
                       <TableCell className="text-right text-muted-foreground text-xs">
                         {row.avgHold}
                       </TableCell>
-                      <TableCell className="text-right font-mono text-xs text-rose-500">
+                      <TableCell className="text-right font-mono text-xs text-rose-500 dark:text-rose-400">
                         {row.maxDd}
                       </TableCell>
                     </TableRow>
@@ -196,7 +196,7 @@ export function IntelDocumentation() {
       <section id="protocol" className="space-y-8">
         <div className="max-w-3xl space-y-3">
           <Badge variant="outline">Telegram Native Protocol</Badge>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Command specifications &amp; terminal protocol
           </h2>
           <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />
@@ -314,9 +314,9 @@ export function IntelDocumentation() {
           </TabsContent>
         </Tabs>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 bg-slate-50 border rounded-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl">
           <div className="space-y-1">
-            <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Connect directly on Telegram</h4>
+            <h4 className="font-semibold text-slate-900 dark:text-white text-sm sm:text-base">Connect directly on Telegram</h4>
             <p className="text-xs text-muted-foreground">
               Interrogate tokens, receive conviction alerts, and execute paper trades in Telegram.
             </p>
@@ -339,7 +339,7 @@ export function IntelDocumentation() {
       <section id="faq" className="space-y-8">
         <div className="max-w-3xl space-y-3">
           <Badge variant="outline">Knowledge Base</Badge>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Frequently asked questions &amp; operational parameters
           </h2>
           <div className="w-14 h-1 bg-[#2952FF] rounded-full mt-1.5" />

@@ -39,14 +39,14 @@ export function JournalTable({ entries }: JournalTableProps) {
       <div className="overflow-x-auto">
         <Table className="w-full text-sm">
           <TableHeader>
-            <TableRow className="border-b border-slate-100 hover:bg-transparent">
-              <TableHead className="font-medium text-slate-400 text-xs pb-2.5 pl-0">Token</TableHead>
-              <TableHead className="font-medium text-slate-400 text-xs pb-2.5">Call</TableHead>
-              <TableHead className="font-medium text-slate-400 text-xs pb-2.5">Conviction</TableHead>
-              <TableHead className="font-medium text-slate-400 text-xs pb-2.5 text-right pr-0">Outcome</TableHead>
+            <TableRow className="border-b border-slate-100 dark:border-slate-800 hover:bg-transparent">
+              <TableHead className="font-medium text-slate-400 dark:text-slate-500 text-xs pb-2.5 pl-0">Token</TableHead>
+              <TableHead className="font-medium text-slate-400 dark:text-slate-500 text-xs pb-2.5">Call</TableHead>
+              <TableHead className="font-medium text-slate-400 dark:text-slate-500 text-xs pb-2.5">Conviction</TableHead>
+              <TableHead className="font-medium text-slate-400 dark:text-slate-500 text-xs pb-2.5 text-right pr-0">Outcome</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="divide-y divide-slate-100">
+          <TableBody className="divide-y divide-slate-100 dark:divide-slate-800">
             {entries.map((entry) => (
               <TableRow
                 key={entry.id}
@@ -54,15 +54,15 @@ export function JournalTable({ entries }: JournalTableProps) {
                   setSelectedEntry(entry)
                   setModalOpen(true)
                 }}
-                className="cursor-pointer transition-colors hover:bg-slate-50/70 border-b border-slate-100"
+                className="cursor-pointer transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800"
               >
-                <TableCell className="py-3 font-semibold text-slate-900 pl-0">
+                <TableCell className="py-3 font-semibold text-slate-900 dark:text-white pl-0">
                   {entry.symbol}
                 </TableCell>
-                <TableCell className="py-3 text-slate-600 text-xs">
+                <TableCell className="py-3 text-slate-600 dark:text-slate-400 text-xs">
                   {entry.timeAgo}
                 </TableCell>
-                <TableCell className="py-3 text-slate-600 font-medium text-xs">
+                <TableCell className="py-3 text-slate-600 dark:text-slate-300 font-medium text-xs">
                   {entry.conviction}
                 </TableCell>
                 <TableCell className={`py-3 font-semibold text-xs text-right pr-0 ${getOutcomeColor(entry)}`}>
@@ -78,31 +78,31 @@ export function JournalTable({ entries }: JournalTableProps) {
       {/* Detail Dialog */}
       {selectedEntry && (
         <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-          <DialogContent className="w-[92vw] sm:max-w-md p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-2xl">
+          <DialogContent className="w-[92vw] sm:max-w-md p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-2xl bg-background dark:bg-slate-950 border-slate-200 dark:border-slate-800">
             <DialogHeader>
-              <DialogTitle className="text-base font-bold text-slate-900">
+              <DialogTitle className="text-base font-bold text-slate-900 dark:text-white">
                 Journal entry · {selectedEntry.symbol}
               </DialogTitle>
-              <DialogDescription className="text-xs text-slate-500">
+              <DialogDescription className="text-xs text-slate-500 dark:text-slate-400">
                 {selectedEntry.name} — {selectedEntry.timeAgo}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-3 text-xs pt-2">
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="text-slate-400 block text-[11px]">Conviction score</span>
-                  <span className="text-base font-bold text-slate-900">{selectedEntry.conviction} / 100</span>
+                <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-400 dark:text-slate-500 block text-[11px]">Conviction score</span>
+                  <span className="text-base font-bold text-slate-900 dark:text-white">{selectedEntry.conviction} / 100</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="text-slate-400 block text-[11px]">Performance</span>
+                <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-400 dark:text-slate-500 block text-[11px]">Performance</span>
                   <span className={`text-base font-bold ${getOutcomeColor(selectedEntry)}`}>
                     {formatOutcome(selectedEntry)}
                   </span>
                 </div>
               </div>
-              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                <span className="text-slate-500 font-semibold block mb-1">Reasoning log notes</span>
-                <p className="text-slate-700 leading-relaxed">{selectedEntry.notes || "Thesis active according to judge conviction rules."}</p>
+              <div className="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400 font-semibold block mb-1">Reasoning log notes</span>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{selectedEntry.notes || "Thesis active according to judge conviction rules."}</p>
               </div>
             </div>
           </DialogContent>

@@ -85,7 +85,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col selection:bg-[#2952FF] selection:text-white">
+    <div className="min-h-screen bg-background text-foreground dark:bg-[#07080c] flex flex-col selection:bg-[#2952FF] selection:text-white transition-colors duration-200">
       {/* Navigation */}
       <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
 
@@ -125,20 +125,20 @@ export default function Home() {
         <IntelDocumentation />
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 mt-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center sm:text-left">
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1">
-            <div className="relative w-6 h-6 flex items-center justify-center shrink-0 -mr-0.5">
+      {/* Footer with generous spacing */}
+      <footer className="border-t border-slate-100 dark:border-slate-800/80 py-10 sm:py-14 text-xs text-slate-500 dark:text-slate-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 relative">
               <Image
                 src="/images/mekiki-icon.png"
                 alt="Mekiki Logo"
-                width={26}
-                height={26}
-                className="w-6 h-6 object-contain select-none scale-125"
+                width={20}
+                height={20}
+                className="w-5 h-5 object-contain"
               />
             </div>
-            <span className="font-semibold text-slate-900 inline-flex items-center">Mekiki</span>
+            <span className="font-semibold text-slate-900 dark:text-white inline-flex items-center">Mekiki</span>
             <span>·</span>
             <span>Telegram-native trading intelligence agent</span>
           </div>
@@ -146,7 +146,7 @@ export default function Home() {
             <span>Powered by Mekiki Market Intelligence Engine</span>
             <a
               href="#hero"
-              className="text-slate-600 hover:text-slate-900 transition-colors"
+              className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               Back to top
             </a>

@@ -360,13 +360,13 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
   return (
     <section id="signals" className="mb-24 md:mb-36">
       {/* Section Header matching standard verdict-grid styling */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-6 md:mb-8 pb-6 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-6 md:mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Real-time simulation stream
           </h2>
           <div className="w-12 sm:w-14 h-1 bg-[#2952FF] rounded-full mt-2 mb-2" />
-          <p className="text-xs sm:text-sm text-slate-500 max-w-xl font-normal">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-xl font-normal">
             Adversarial multi-agent telemetry streaming in motion. Live micro-orderflow, CVD absorption, and structural catalysts across ecosystems.
           </p>
         </div>
@@ -380,12 +380,12 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
           >
             {isLive ? (
               <>
-                <Pause className="w-3.5 h-3.5 mr-2 text-amber-600" />
+                <Pause className="w-3.5 h-3.5 mr-2 text-amber-600 dark:text-amber-400" />
                 <span>Pause stream</span>
               </>
             ) : (
               <>
-                <Play className="w-3.5 h-3.5 mr-2 text-emerald-600" />
+                <Play className="w-3.5 h-3.5 mr-2 text-emerald-600 dark:text-emerald-400" />
                 <span>Resume stream</span>
               </>
             )}
@@ -395,15 +395,15 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
 
       {/* Ecosystem Filter Pills matching verdict-grid exact standard */}
       <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
-        <div className="inline-flex rounded-full bg-slate-100 p-1 border border-slate-200/80 text-xs">
+        <div className="inline-flex rounded-full bg-slate-100 dark:bg-slate-900 p-1 border border-slate-200/80 dark:border-slate-800 text-xs">
           {networks.map((f) => (
             <button
               key={f}
               onClick={() => setActiveNetwork(f)}
               className={`rounded-full px-3 sm:px-4 py-1 sm:py-1.5 font-medium transition-all text-xs ${
                 activeNetwork === f
-                  ? "bg-white text-slate-900 shadow-sm font-semibold"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-semibold"
+                  : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
               {f === "all" ? "All Ecosystems" : f}
@@ -432,7 +432,7 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
             >
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-bold text-sm text-slate-900 tracking-tight">
+                  <span className="font-bold text-sm text-slate-900 dark:text-white tracking-tight">
                     {tk.symbol}
                   </span>
                   <Badge variant="outline" className="text-[10px] font-normal px-1.5 py-0">
@@ -441,17 +441,17 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
                 </div>
 
                 <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-base font-bold text-slate-900 font-mono">
+                  <span className="text-base font-bold text-slate-900 dark:text-white font-mono">
                     ${tk.price < 1 ? tk.price.toFixed(3) : tk.price.toFixed(2)}
                   </span>
-                  <span className="text-[11px] font-semibold text-emerald-600 font-mono">
+                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 font-mono">
                     {tk.change}
                   </span>
                 </div>
               </div>
 
               {/* In-motion real-time SVG waveform */}
-              <div className="pt-2 flex items-center justify-between border-t border-slate-100">
+              <div className="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800">
                 <LiveSparkline points={points} isPositive={isLatestLong} />
               </div>
             </Card>
@@ -461,7 +461,7 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
 
       {/* Main Signal Feed Card (Pure Standard Shadcn Card) */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-slate-100">
+        <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <CardTitle className="text-base font-semibold">
               Live Synthesis Feed
@@ -475,19 +475,19 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
           </span>
         </CardHeader>
 
-        <CardContent className="p-0 divide-y divide-slate-100">
+        <CardContent className="p-0 divide-y divide-slate-100 dark:divide-slate-800">
           {filteredSignals.map((sig, idx) => (
             <div
               key={sig.id}
               className={cn(
-                "p-4 sm:p-5 transition-colors hover:bg-slate-50/70 flex flex-col md:flex-row md:items-center justify-between gap-4",
-                idx === 0 && "bg-slate-50/40"
+                "p-4 sm:p-5 transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-800/50 flex flex-col md:flex-row md:items-center justify-between gap-4",
+                idx === 0 && "bg-slate-50/40 dark:bg-slate-900/40"
               )}
             >
               {/* Left Column: Asset, Network, Stance, and Type (No Flash/Zap Icon) */}
               <div className="space-y-1 min-w-[200px]">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-base text-slate-900 tracking-tight">
+                  <span className="font-bold text-base text-slate-900 dark:text-white tracking-tight">
                     {sig.symbol}
                   </span>
                   <span className="text-xs text-muted-foreground">{sig.name}</span>
@@ -502,30 +502,30 @@ export function LiveSignalStream({ onPracticeTrade }: LiveSignalStreamProps) {
                   </Badge>
                 </div>
 
-                <div className="text-xs font-medium text-slate-700">
+                <div className="text-xs font-medium text-slate-700 dark:text-slate-300">
                   {sig.signalType}
                 </div>
               </div>
 
               {/* Middle Column: Synthesis in Motion */}
-              <div className="flex-1 space-y-1 text-xs text-slate-600 max-w-2xl">
-                <p className="font-medium text-slate-800 leading-snug">
+              <div className="flex-1 space-y-1 text-xs text-slate-600 dark:text-slate-400 max-w-2xl">
+                <p className="font-medium text-slate-800 dark:text-slate-200 leading-snug">
                   {sig.catalyst}
                 </p>
-                <div className="grid sm:grid-cols-2 gap-2 pt-1 text-[11px] text-slate-500">
-                  <div className="bg-slate-50 p-2 rounded border border-slate-100 flex items-start gap-1.5">
-                    <span className="text-emerald-700 font-bold shrink-0">Bull Pass:</span>
-                    <span className="text-slate-700 leading-relaxed">{sig.bullEvidence}</span>
+                <div className="grid sm:grid-cols-2 gap-2 pt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                  <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded border border-slate-100 dark:border-slate-800 flex items-start gap-1.5">
+                    <span className="text-emerald-700 dark:text-emerald-400 font-bold shrink-0">Bull Pass:</span>
+                    <span className="text-slate-700 dark:text-slate-300 leading-relaxed">{sig.bullEvidence}</span>
                   </div>
-                  <div className="bg-slate-50 p-2 rounded border border-slate-100 flex items-start gap-1.5">
-                    <span className="text-rose-700 font-bold shrink-0">Bear Pass:</span>
-                    <span className="text-slate-700 leading-relaxed">{sig.bearFalsification}</span>
+                  <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded border border-slate-100 dark:border-slate-800 flex items-start gap-1.5">
+                    <span className="text-rose-700 dark:text-rose-400 font-bold shrink-0">Bear Pass:</span>
+                    <span className="text-slate-700 dark:text-slate-300 leading-relaxed">{sig.bearFalsification}</span>
                   </div>
                 </div>
               </div>
 
               {/* Right Column: Standard Shadcn Button & Time (No button overrides) */}
-              <div className="flex items-center md:flex-col md:items-end justify-between gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
+              <div className="flex items-center md:flex-col md:items-end justify-between gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-slate-800">
                 <div className="text-right">
                   <span className="text-xs text-muted-foreground font-mono block">
                     {sig.timeAgo}

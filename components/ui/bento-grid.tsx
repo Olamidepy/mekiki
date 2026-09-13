@@ -47,8 +47,8 @@ const BentoCard = ({
     key={name}
     className={cn(
       "group relative col-span-3 lg:col-span-1 flex flex-col justify-between overflow-hidden rounded-2xl",
-      // light styles
-      "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.04),0_2px_4px_rgba(0,0,0,.04),0_12px_24px_rgba(0,0,0,.04)] border border-slate-100",
+      // light styles & dark styles
+      "bg-white dark:bg-card [box-shadow:0_0_0_1px_rgba(0,0,0,.04),0_2px_4px_rgba(0,0,0,.04),0_12px_24px_rgba(0,0,0,.04)] border border-slate-100 dark:border-slate-800",
       // hover elevation
       "hover:[box-shadow:0_0_0_1px_rgba(41,82,255,0.12),0_8px_20px_rgba(0,0,0,.06),0_20px_36px_rgba(41,82,255,.05)]",
       // transform
@@ -64,14 +64,14 @@ const BentoCard = ({
     <div className="p-5 sm:p-6 relative z-10 flex flex-col justify-between h-full">
       <div className="flex transform-gpu flex-col gap-2 transition-all duration-300 lg:group-hover:-translate-y-8">
         {Icon && (
-          <div className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-sm transition-all duration-300 ease-in-out group-hover:scale-95 group-hover:bg-[#2952FF] group-hover:text-white group-hover:border-[#2952FF]">
+          <div className="h-10 w-10 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center text-slate-800 dark:text-slate-200 shadow-sm transition-all duration-300 ease-in-out group-hover:scale-95 group-hover:bg-[#2952FF] group-hover:text-white group-hover:border-[#2952FF]">
             <Icon className="h-5 w-5 transform-gpu" />
           </div>
         )}
-        <h3 className="text-xl font-bold tracking-tight text-slate-900 mt-2">
+        <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-2">
           {name}
         </h3>
-        <p className="max-w-lg text-sm text-slate-500 leading-relaxed">
+        <p className="max-w-lg text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
           {description}
         </p>
       </div>
@@ -86,7 +86,7 @@ const BentoCard = ({
           variant="link"
           asChild
           size="sm"
-          className="p-0 text-[#2952FF] font-semibold"
+          className="p-0 text-[#2952FF] dark:text-[#5c80ff] font-semibold"
         >
           <a href={href}>
             {cta}
@@ -106,7 +106,7 @@ const BentoCard = ({
         variant="link"
         asChild
         size="sm"
-        className="pointer-events-auto p-0 text-[#2952FF] font-semibold hover:text-[#1f3fd6]"
+        className="pointer-events-auto p-0 text-[#2952FF] dark:text-[#5c80ff] font-semibold hover:text-[#1f3fd6]"
       >
         <a href={href} className="inline-flex items-center">
           {cta}
@@ -116,7 +116,7 @@ const BentoCard = ({
     </div>
 
     {/* Subtle hover overlay */}
-    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-slate-900/[0.02]" />
+    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-slate-900/[0.02] dark:group-hover:bg-white/[0.02]" />
   </div>
 )
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
   title: "Mekiki — Multi-Agent Trading Intelligence Terminal",
@@ -12,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -21,9 +22,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-white text-slate-900 antialiased font-sans selection:bg-[#2952FF] selection:text-white">
-        {children}
+      <body className="bg-background text-foreground antialiased font-sans selection:bg-[#2952FF] selection:text-white transition-colors duration-200">
+        <ThemeProvider defaultTheme="light" storageKey="mekiki-theme">
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
 }
+
