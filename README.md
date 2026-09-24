@@ -20,8 +20,7 @@
 
 ## Executive Summary & Philosophy
 
-**Mekiki** is an autonomous trading appraisal terminal designed to pierce through market noise, surface illusions, and emotional hype to determine the structural authenticity and trade quality of crypto assets.
-
+**Mekiki** is an autonomous crypto trading appraisal terminal that evaluates whether a trade setup is actually worth taking.
 Modern crypto markets are drowned in synthetic noise:
 - **Black-Box Indicators**: Moving averages, RSI, and Bollinger Bands generate endless lagging, contradictory signals without multi-timeframe context.
 - **Single-Model Hallucinations**: Prompting a single AI agent for token advice invariably causes confirmation bias and sycophantic hallucinations.
